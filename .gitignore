@@ -1,0 +1,37 @@
+# Track authored Codex configuration and plugin sources by explicit allowlist.
+# Runtime state and credentials remain ignored even when Codex adds new files.
+/*
+!/.gitignore
+!/README.md
+!/AGENTS.md
+!/config.toml
+!/claude-harness-migration.md
+!/agents/
+!/agents/**
+!/prompts/
+!/prompts/**
+!/rules/
+!/rules/**
+!/skills/
+!/skills/**
+!/tests/
+!/tests/**
+!/personal-marketplace/
+!/personal-marketplace/**
+
+# Bundled and generated content inside allowed trees.
+/skills/.system/
+**/node_modules/
+**/coverage/
+**/__pycache__/
+**/*.pyc
+**/*.log
+
+# Defense in depth for credentials accidentally added to authored trees.
+**/.env
+**/.env.*
+**/auth.json
+**/*credentials*.json
+**/secrets/
+**/*.pem
+**/*.key

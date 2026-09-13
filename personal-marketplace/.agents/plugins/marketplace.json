@@ -1,0 +1,68 @@
+{
+  "name": "personal",
+  "interface": {
+    "displayName": "Personal"
+  },
+  "plugins": [
+    {
+      "name": "project-structure",
+      "source": {
+        "source": "local",
+        "path": "./plugins/project-structure"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "codex-guardrails",
+      "source": {
+        "source": "local",
+        "path": "./plugins/codex-guardrails"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "searxng",
+      "source": {
+        "source": "local",
+        "path": "./plugins/searxng"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "codebase-project-graph",
+      "source": {
+        "source": "local",
+        "path": "./plugins/codebase-project-graph"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "control-task",
+      "source": {
+        "source": "local",
+        "path": "./plugins/control-task"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

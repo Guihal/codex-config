@@ -1,0 +1,18 @@
+{
+  "name": "control-task",
+  "version": "0.2.5",
+  "description": "Session-scoped durable task anchor for Codex.",
+  "author": {
+    "name": "Local developer"
+  },
+  "interface": {
+    "displayName": "Control Task",
+    "shortDescription": "Keep the main task anchored to one Codex session.",
+    "longDescription": "Provides a session-bound control_task_set tool and lifecycle hooks that anchor root and subagent launch tasks across compaction and long tool-driven turns.",
+    "developerName": "Local developer",
+    "category": "Developer Tools",
+    "capabilities": ["MCP", "Hooks", "Write"],
+    "defaultPrompt": "Set the durable main task for this session."
+  },
+  "mcpServers": "./.mcp.json"
+}

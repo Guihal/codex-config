@@ -1,0 +1,263 @@
+approvals_reviewer = "user"
+experimental_compact_prompt_file = "/home/penis/.codex/prompts/rich-compaction.md"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "high"
+project_doc_fallback_filenames = ["CLAUDE.md"]
+project_doc_max_bytes = 65536
+
+default_permissions = ":danger-full-access"
+
+[features]
+memories = true
+
+[memories]
+generate_memories = true
+use_memories = true
+disable_on_external_context = true
+
+[mcp_servers.web-inspector]
+command = "npx"
+args = ["-y", "mcp-web-inspector"]
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.web-inspector.tools.navigate]
+approval_mode = "approve"
+
+[mcp_servers.web-inspector.tools.evaluate]
+approval_mode = "approve"
+
+[mcp_servers.web-inspector.tools.click]
+approval_mode = "approve"
+
+[mcp_servers.browser-inspector]
+command = "npx"
+args = ["-y", "browser-inspector-mcp"]
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.computer-use-linux]
+command = "/home/penis/.bun/bin/bun"
+args = ["/usr/projects/cu-scene-proxy/proxy.js"]
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.injection-rules]
+command = "/home/penis/.bun/bin/bun"
+args = ["/home/penis/.claude/mcp/injection-rules/daemon.js"]
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
+[mcp_servers.searxng]
+command = "/home/penis/.bun/bin/bun"
+args = ["/home/penis/.claude/mcp/searxng/server.ts"]
+startup_timeout_sec = 20
+tool_timeout_sec = 60
+
+[mcp_servers.swatchdog]
+url = "https://swatchdog-connector-970396648818.us-central1.run.app/mcp"
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["-y", "@playwright/mcp@latest"]
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
+[mcp_servers.context7]
+url = "https://mcp.context7.com/mcp"
+env_http_headers = { "Authorization" = "CONTEXT7_API_KEY" }
+startup_timeout_sec = 30
+tool_timeout_sec = 60
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3
+max_depth = 2
+interrupt_message = true
+
+[[skills.config]]
+path = "/home/penis/.agents/skills/task-simple/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/home/penis/.agents/skills/task-complex/SKILL.md"
+enabled = false
+
+[projects."/home/penis"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/base-extention"]
+trust_level = "trusted"
+
+[projects."/home/penis/Рабочий стол"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/u24"]
+trust_level = "trusted"
+
+[projects."/home/penis/TencentDB-Agent-Memory"]
+trust_level = "trusted"
+
+[projects."/tmp/tz06-f8-FDkTfs/codex"]
+trust_level = "trusted"
+
+[projects."/tmp/tmp.AHQEXrlIjw"]
+trust_level = "trusted"
+
+[projects."/tmp/tmp.ThPLQjnBK3"]
+trust_level = "trusted"
+
+[projects."/tmp/tmp.V1rlDVg3PN"]
+trust_level = "trusted"
+
+[projects."/tmp/tz06-f8-gvmf5b/codex"]
+trust_level = "trusted"
+
+[projects."/tmp/tz06-f8-hXmjZP/codex"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/forestResident"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/green-invest-landing-astro"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/WebAppLab"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/резюме"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/морковск"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/calculatorTilda"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/Myfriend"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/cardealer-rent.by"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/yaree-cart"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/pi-bench"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/alk-test-assignment"]
+trust_level = "trusted"
+
+[projects."/home/penis/plans"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/nuxt-template"]
+trust_level = "trusted"
+
+[projects."/tmp/codex-lint-e2e.cjulvX"]
+trust_level = "trusted"
+
+[projects."/tmp"]
+trust_level = "trusted"
+
+[plugins."codex-guardrails@personal"]
+enabled = true
+
+[plugins."project-structure@personal"]
+enabled = true
+
+[plugins."codebase-project-graph@personal"]
+enabled = true
+
+[plugins."codebase-project-graph@personal".mcp_servers.codebase-memory-mcp.tools.get_architecture]
+approval_mode = "approve"
+
+[plugins."codebase-project-graph@personal".mcp_servers.codebase-memory-mcp.tools.index_status]
+approval_mode = "approve"
+
+[plugins."superpowers@openai-curated"]
+enabled = true
+
+[plugins."gmail@openai-curated"]
+enabled = true
+
+[plugins."google-calendar@openai-curated"]
+enabled = true
+
+[plugins."google-drive@openai-curated"]
+enabled = true
+
+[plugins."control-task@personal"]
+enabled = true
+
+[hooks.state]
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:41e18e0d3040d275d9586d9382bb2f16f9ff2d2c4765945ea51adfd876567adf"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:e5b7cbd9020407fb1db652cc11d12545f63bf2ac8ec4aa184cfa5b9f365a3cc9"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:subagent_start:0:0"]
+trusted_hash = "sha256:3468c75d255e539af8ebe09c17762d4f31675a3ac58b7f2165a267a1c42c3e61"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:bb8b24d4571183c559639158c30a2b95e7963dd544d94f18e62ed9df056d8ee8"
+
+[hooks.state."project-structure@personal:hooks/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:435f1c8b2d6ac926a6974eee7283c019f8c45bda5c89b9373b3a613ceca19cc0"
+
+[hooks.state."project-structure@personal:hooks/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:b5e9a5ff6955282d56cea7dc9e510713b1506a0f16241bd86a7e0737311e233e"
+
+[hooks.state."project-structure@personal:hooks/hooks.json:subagent_start:0:0"]
+trusted_hash = "sha256:de2879e00c11f519a4283e4ae8b141fb156a55481d3fb8c4d3c9d4037264aaac"
+
+[hooks.state."codebase-project-graph@personal:hooks/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:62ced33802e4ffabf7dc704a3f6c23cde94580f529fae219b309821b9f79acc8"
+
+[hooks.state."codebase-project-graph@personal:hooks/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:dabc6a236a062677b80f580874637ea805e922c4130c8a3586b172ca17db29a6"
+
+[hooks.state."codebase-project-graph@personal:hooks/hooks.json:subagent_start:0:0"]
+trusted_hash = "sha256:83e80c92965fddea9364dc59a43d130f6e47880ed9bdb6de823e0386e8345c55"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:post_tool_use:1:0"]
+trusted_hash = "sha256:8c5ef435db423f1609212c0579ed076fc274de13645dc09dfbc294c28f3a1f08"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:c95b9f68416120e7b1816bf8cfa456d06690328ccc6091f9fad28fef891fd3fa"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:subagent_stop:0:0"]
+trusted_hash = "sha256:841098350d03eff8c50599f120c017fccfe865667afdd97bdcb9c12a355eb9d1"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:stop:0:0"]
+trusted_hash = "sha256:0ecac7b6b6a61e85a6937d5397d012e5e59b7468ebbff12b238cd9c8d5afc060"
+
+[hooks.state."control-task@personal:hooks/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:0da2e194c52c7f23335ff7054c79379460825561b6014a9d873b0399ee9953bd"
+
+[hooks.state."control-task@personal:hooks/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:c8d40151ded14d25f446f580e565f38989ce535d6037e6d43a5dc0e5880a36b6"
+
+[hooks.state."control-task@personal:hooks/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:ad0dc1f1ffd7f4c325668258992757ef6c3416f82e23b695412f794d316f09f3"
+
+[hooks.state."control-task@personal:hooks/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:23c12af5d98c80bb76c54be953572d19597867890b61e9565a3a04fcdfff690d"
+
+[hooks.state."control-task@personal:hooks/hooks.json:subagent_start:0:0"]
+trusted_hash = "sha256:bf722251385ecd161f587494c54807ace40e4d5e0116b88125bf0f3dcc7db0f0"
+
+[tui.model_availability_nux]
+"gpt-5.6-sol" = 2
+gpt-6-astra = 4
+
+[notice]
+hide_rate_limit_model_nudge = true

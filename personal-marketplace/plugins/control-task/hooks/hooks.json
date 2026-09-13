@@ -1,0 +1,70 @@
+{
+  "description": "Inject one session-scoped durable task anchor.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/control-task-hook.mjs\"",
+            "timeout": 5,
+            "statusMessage": "Loading the session task",
+            "additionalContextLimit": 8000
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/control-task-hook.mjs\"",
+            "timeout": 5,
+            "statusMessage": "Initializing the subagent task",
+            "additionalContextLimit": 8000
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^Agent$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/subagent-bootstrap-hook.mjs\"",
+            "timeout": 5,
+            "statusMessage": "Anchoring the subagent task"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/control-task-hook.mjs\"",
+            "timeout": 5,
+            "statusMessage": "Refreshing the session task",
+            "additionalContextLimit": 8000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/control-task-hook.mjs\"",
+            "timeout": 5,
+            "additionalContextLimit": 8000
+          }
+        ]
+      }
+    ]
+  }
+}

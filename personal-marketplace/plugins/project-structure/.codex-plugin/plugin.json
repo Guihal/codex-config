@@ -1,0 +1,24 @@
+{
+  "name": "project-structure",
+  "version": "0.1.0+codex.20260802152549",
+  "description": "Ports the current Pi project-structure cadence, ignore rules, depth config, and project_tree tool to Codex.",
+  "author": {
+    "name": "Local developer"
+  },
+  "interface": {
+    "displayName": "Project Structure",
+    "shortDescription": "Inject Pi-compatible project trees and inspect directories",
+    "longDescription": "Injects a bounded project tree at session start, after compaction, and every ten prompts using Pi-compatible project-structure.ignore and pj-tree.conf semantics; also provides a read-only project_tree MCP tool.",
+    "developerName": "Local developer",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read"
+    ],
+    "defaultPrompt": [
+      "Show the project tree.",
+      "Explain this repository's directory layout."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "searxng",
+  "version": "0.1.0",
+  "description": "Searxng plugin",
+  "author": {
+    "name": "Local developer"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Searxng",
+    "shortDescription": "Use Searxng in Codex.",
+    "longDescription": "Searxng adds a local Codex plugin scaffold.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Help me use Searxng."
+  },
+  "mcpServers": "./.mcp.json"
+}

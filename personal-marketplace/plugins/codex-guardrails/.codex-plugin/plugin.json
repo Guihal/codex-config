@@ -1,0 +1,19 @@
+{
+  "name": "codex-guardrails",
+  "version": "0.1.0+codex.20260814041909",
+  "description": "Stateful Pi-style behavioral guardrails for Codex",
+  "author": {
+    "name": "Local developer"
+  },
+  "interface": {
+    "displayName": "Codex Guardrails",
+    "shortDescription": "Inject persistent local behavioral rules into Codex",
+    "longDescription": "Ports the actively maintained Pi rule engine and Claude policy catalog to native Codex lifecycle hooks.",
+    "developerName": "Local developer",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive"
+    ],
+    "defaultPrompt": "Explain which local guardrails are active."
+  }
+}

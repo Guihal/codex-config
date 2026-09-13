@@ -1,0 +1,14 @@
+{
+  "name": "layout-skills-hint",
+  "apply": ["*", "!critic", "!task", "!auditor"],
+  "window": 1,
+  "body": "[layout-skills-hint]\nЛюбая вёрстка — читай скилл: mcp-inspector-workflow (MCP ground truth, primary), ui-standards (законы UI), ui-audit (axe-core + overflow + touch-targets), css-architecture (организация стилей), responsive-derive (мобайл из десктопа), lost-pixel (регрессия, только если в репо есть tools/lost-pixel/).\nПеред ЛЮБОЙ верификацией вёрстки (DOM, layout, computed styles, visibility, каскад, селекторы, pixel-perfect, before/after) прочитай mcp-inspector-workflow ЦЕЛИКОМ, потом бери ground truth из живого браузера: mcp__web_inspector__* или mcp__browser_inspector__browser_inspect.\nOff-token цвета/радиусы/отступы → mcp__swatchdog__check_design_drift. Цикл edit-verify-edit-verify: edit-driven для worker, artifact-driven для checker. Не угадывай — браузер живой. Скилл уже прочитан в этой сессии — повторно не нужно.",
+  "remind": {
+    "suffix": "\n\n[layout-skills-hint] Любая вёрстка — читай mcp-inspector-workflow + ui-standards + ui-audit + css-architecture. Перед верификацией бери ground truth через mcp__web_inspector__* / mcp__browser_inspector__browser_inspect. Не угадывай.",
+    "when": {
+      "any": ["верстка", "вёрстка", "layout", "стили", "CSS", "DOM", "каскад", "computed", "видимость", "селектор", "pixel-perfect", "match design", "overflow", "touch-target", "верификация", "проверить вёрстку", "проверка", "инспектор", "mcp-web-inspector", "browser-inspector", "ground truth", "до инспектор", "verify", "inspection"],
+      "source": "user_only",
+      "cooldown_turns": 8
+    }
+  }
+}

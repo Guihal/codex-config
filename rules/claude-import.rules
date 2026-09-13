@@ -1,0 +1,56 @@
+# Destructive command denials imported from ~/.claude/settings.json.
+prefix_rule(
+    pattern = ["git", "reset", "--hard"],
+    decision = "forbidden",
+    justification = "Preserve uncommitted work; use a recoverable, explicitly scoped alternative.",
+    match = ["git reset --hard", "git reset --hard HEAD~1"],
+)
+
+prefix_rule(
+    pattern = ["git", "clean", "-fd"],
+    decision = "forbidden",
+    justification = "Do not irreversibly delete untracked files.",
+    match = ["git clean -fd", "git clean -fd src"],
+)
+
+prefix_rule(
+    pattern = ["git", "clean", "-fdx"],
+    decision = "forbidden",
+    justification = "Do not irreversibly delete ignored and untracked files.",
+    match = ["git clean -fdx"],
+)
+
+prefix_rule(
+    pattern = ["git", "push", "--force"],
+    decision = "forbidden",
+    justification = "Do not rewrite remote history; use a normal push or an explicitly reviewed safer workflow.",
+    match = ["git push --force", "git push --force origin main"],
+)
+
+prefix_rule(
+    pattern = ["git", "push", "-f"],
+    decision = "forbidden",
+    justification = "Do not rewrite remote history; use a normal push or an explicitly reviewed safer workflow.",
+    match = ["git push -f", "git push -f origin main"],
+)
+
+prefix_rule(
+    pattern = ["docker", "compose", "down", "-v"],
+    decision = "forbidden",
+    justification = "Preserve Docker volumes; stop services without deleting persistent data.",
+    match = ["docker compose down -v"],
+)
+
+prefix_rule(
+    pattern = ["docker", "compose", "down", "--volumes"],
+    decision = "forbidden",
+    justification = "Preserve Docker volumes; stop services without deleting persistent data.",
+    match = ["docker compose down --volumes"],
+)
+
+prefix_rule(
+    pattern = ["docker-compose", "down", "-v"],
+    decision = "forbidden",
+    justification = "Preserve Docker volumes; stop services without deleting persistent data.",
+    match = ["docker-compose down -v"],
+)

@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "control-task": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["./scripts/control-task-mcp.mjs"],
+      "cwd": ".",
+      "startup_timeout_sec": 10,
+      "tool_timeout_sec": 10,
+      "supports_parallel_tool_calls": false,
+      "default_tools_approval_mode": "auto",
+      "enabled_tools": ["control_task_set", "control_task_adopt"]
+    }
+  }
+}

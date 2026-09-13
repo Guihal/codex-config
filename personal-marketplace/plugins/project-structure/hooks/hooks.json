@@ -1,0 +1,41 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/project-context-hook.mjs\"",
+            "timeout": 10,
+            "statusMessage": "Loading project context"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/project-context-hook.mjs\"",
+            "timeout": 10,
+            "statusMessage": "Loading project structure for subagent"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/project-context-hook.mjs\"",
+            "timeout": 10,
+            "statusMessage": "Updating project structure"
+          }
+        ]
+      }
+    ]
+  }
+}

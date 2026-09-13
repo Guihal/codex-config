@@ -1,0 +1,6 @@
+{
+  "name": "agents-md-update",
+  "apply": ["*", "!critic", "!architect", "!task-researcher", "!auditor", "!researcher"],
+  "body": "[agents-md-update]\nDO: выяснил важное для будущих агентов — обнови AGENTS.md (глобальный ~/AGENTS.md или проектный): факты об окружении, процедуры, предпочтения юзера.\nDON'T: ничего нового не узнал — не трогай.",
+  "remind": { "every_n_turns": 25, "suffix": "\n\n[напоминание] Узнал важное для будущих агентов — впиши в AGENTS.md (глобальный/проектный). Ничего нового — не трогай." }
+}
