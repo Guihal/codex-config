@@ -198,9 +198,6 @@ enabled = true
 
 [hooks.state]
 
-[hooks.state."codex-guardrails@personal:hooks/hooks.json:pre_tool_use:0:0"]
-trusted_hash = "sha256:41e18e0d3040d275d9586d9382bb2f16f9ff2d2c4765945ea51adfd876567adf"
-
 [hooks.state."codex-guardrails@personal:hooks/hooks.json:session_start:0:0"]
 trusted_hash = "sha256:e5b7cbd9020407fb1db652cc11d12545f63bf2ac8ec4aa184cfa5b9f365a3cc9"
 

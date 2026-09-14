@@ -1,26 +1,35 @@
 # Codex Guardrails
 
-Нативные Codex-адаптации активных локальных Pi guardrails. Политика каждого
-extension переносится без переосмысления; меняется только runtime API.
+Нативные Codex-адаптации выбранных локальных Pi guardrails: injection rules
+и lint-inject. Изменения политики относительно Pi отмечаются явно.
 
-## Bash line guard
+## Ограничение строк команд удалено
 
-Источник: `/home/penis/.pi/agent/extensions/bash-line-guard.ts`.
+С версии 0.1.1 plugin не ограничивает количество строк в Bash-команде.
+По запросу пользователя удалены `bash-line-guard.mjs`, его регистрация
+`PreToolUse`, старые тесты ограничения и соответствующая запись доверия
+в репозиторном `config.toml`. Injection rules и lint-inject сохранены.
+Ограничения других плагинов и самого Codex этой правкой не меняются.
 
-Перед каждым Codex Bash tool call hook считает строки через
-`command.split("\n").length`. Команды до 20 строк включительно разрешены;
-команды длиннее блокируются с исходным сообщением Pi. На нерелевантном или
-повреждённом hook input проверка fail-open.
+Оценка следующих переносов из Pi и Claude: [PORTABILITY.md](PORTABILITY.md).
+Это рекомендации, а не список дополнительно включённых расширений.
+
+## Установка и проверка
 
 После установки новый или изменившийся command hook нужно просмотреть и явно
 доверить через `/hooks`. Запуск с обходом hook trust не требуется.
 
-Проверка:
+Проверка из каталога plugin:
 
 ```bash
-node --test /home/penis/plugins/codex-guardrails/tests/*.test.mjs
+node --test tests/*.test.mjs
 python3 /home/penis/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /home/penis/plugins/codex-guardrails
 ```
+
+`tests/hook-registration.test.mjs` проверяет отсутствие старого ограничителя
+и сохранение регистрации lifecycle/линтера. Это не end-to-end проверка Codex.
+Обновление репозитория само по себе не обновляет отдельную установленную копию
+plugin: она должна использовать обновлённые исходники.
 
 Auditor extension в этот plugin не переносится и не изменяется. Auditor
 существует в Codex только как роль субагента.

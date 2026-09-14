@@ -35,19 +35,6 @@
         }]
       }
     ],
-    "PreToolUse": [
-      {
-        "matcher": "^Bash$",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"${PLUGIN_ROOT}/scripts/bash-line-guard.mjs\"",
-            "timeout": 5,
-            "statusMessage": "Checking Bash line count"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": ".*",

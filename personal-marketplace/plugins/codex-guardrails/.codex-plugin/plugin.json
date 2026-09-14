@@ -1,6 +1,6 @@
 {
   "name": "codex-guardrails",
-  "version": "0.1.0+codex.20260814041909",
+  "version": "0.1.1",
   "description": "Stateful Pi-style behavioral guardrails for Codex",
   "author": {
     "name": "Local developer"
