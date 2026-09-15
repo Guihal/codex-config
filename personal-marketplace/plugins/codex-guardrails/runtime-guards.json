@@ -1,0 +1,6 @@
+{
+  "skill_roots": [],
+  "max_skill_bytes": 65536,
+  "max_restore_bytes": 262144,
+  "max_skills": 32
+}

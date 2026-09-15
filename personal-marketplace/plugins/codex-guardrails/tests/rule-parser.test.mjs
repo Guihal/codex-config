@@ -61,14 +61,14 @@ test("loader keeps valid peers and rejects duplicate names", () => {
   assert.equal(errors.length, 2);
 });
 
-test("active catalog has the exact 17-rule inventory and Codex role mappings", () => {
+test("active catalog has the exact 18-rule inventory and Codex role mappings", () => {
   const rules = loadRules(RULES_DIR);
   assert.deepEqual(rules.map((rule) => rule.name), [
     "a-working-product", "ab-verify-recipes", "accuracy", "agent-orchestration",
     "agents-md-update", "code-file-size", "config-extract", "destructive-confirm",
     "explore-before-edit", "git-hygiene", "incremental-steps", "invariants",
     "layout-skills-hint", "no-unrequested-work", "rule-announce-execute", "task-list",
-    "verify-before-done",
+    "user-correction-rebase", "verify-before-done",
   ]);
   assert.deepEqual(loadDistribution(DISTRIBUTION_PATH), { minStep: 6, maxStep: 52 });
 });
@@ -102,7 +102,7 @@ function rulesJsonFiles() {
     "agents-md-update.json", "code-file-size.json", "config-extract.json", "destructive-confirm.json",
     "explore-before-edit.json", "git-hygiene.json", "incremental-steps.json", "invariants.json",
     "layout-skills-hint.json", "no-unrequested-work.json", "rule-announce-execute.json", "task-list.json",
-    "verify-before-done.json",
+    "user-correction-rebase.json", "verify-before-done.json",
   ];
 }
 

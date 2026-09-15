@@ -252,6 +252,27 @@ trusted_hash = "sha256:23c12af5d98c80bb76c54be953572d19597867890b61e9565a3a04fcd
 [hooks.state."control-task@personal:hooks/hooks.json:subagent_start:0:0"]
 trusted_hash = "sha256:bf722251385ecd161f587494c54807ace40e4d5e0116b88125bf0f3dcc7db0f0"
 
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:pre_tool_use:0:0"]
+trusted_hash = "sha256:db6cf1367fa3e5c2d40346510f8599d6aa6552e46ebc44649ea7b7359c2cf977"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:post_tool_use:2:0"]
+trusted_hash = "sha256:4ff06e877989d9e11b6233488d509e4c8c5afddf8d1095a459cac864593fc7d3"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:pre_compact:0:0"]
+trusted_hash = "sha256:50d5c644f2cfa7cde1f13647df86208060e39075d9f6d3e05552cd6ae8fcce8e"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:post_compact:0:0"]
+trusted_hash = "sha256:015497594571ff671b9094361134c52f9a4a11f7200b52a1d097c1729ee6328c"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:session_start:1:0"]
+trusted_hash = "sha256:7276f00c9c6cc89f73223851509969dfd2614ffaee43feb533cf4fe033ba5742"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:user_prompt_submit:1:0"]
+trusted_hash = "sha256:30664c4c6aa7f6e5cec6b414c5cb71513560d36279588ff8f1dc0ea804d240f1"
+
+[hooks.state."codex-guardrails@personal:hooks/hooks.json:subagent_start:1:0"]
+trusted_hash = "sha256:e9306174cc254d1feb92b25c7929d4b577ba1fd4c89a2cf1f684d436ebfaa352"
+
 [tui.model_availability_nux]
 "gpt-5.6-sol" = 2
 gpt-6-astra = 4

@@ -11,6 +11,18 @@
           "statusMessage": "Loading Codex rules",
           "additionalContextLimit": 24000
         }]
+      },
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/runtime-guards.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking process targets and skill recovery",
+            "additionalContextLimit": 0
+          }
+        ]
       }
     ],
     "SubagentStart": [
@@ -22,6 +34,17 @@
           "statusMessage": "Loading Codex role rules",
           "additionalContextLimit": 24000
         }]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/runtime-guards.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking process targets and skill recovery",
+            "additionalContextLimit": 0
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
@@ -33,6 +56,17 @@
           "statusMessage": "Refreshing Codex rules",
           "additionalContextLimit": 24000
         }]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/runtime-guards.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking process targets and skill recovery",
+            "additionalContextLimit": 0
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -54,6 +88,17 @@
           "statusMessage": "Linting changed files",
           "additionalContextLimit": 5000
         }]
+      },
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/runtime-guards.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking process targets and skill recovery"
+          }
+        ]
       }
     ],
     "Stop": [
@@ -74,6 +119,43 @@
           "timeout": 5,
           "statusMessage": "Scheduling role reminders"
         }]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/runtime-guards.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking process targets and skill recovery"
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/runtime-guards.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking process targets and skill recovery"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${PLUGIN_ROOT}/scripts/runtime-guards.py\"",
+            "timeout": 10,
+            "statusMessage": "Checking process targets and skill recovery",
+            "additionalContextLimit": 0
+          }
+        ]
       }
     ]
   }

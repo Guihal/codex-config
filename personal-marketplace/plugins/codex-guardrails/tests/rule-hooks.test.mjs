@@ -23,7 +23,7 @@ test("startup injects all standing rules and suppresses the immediate duplicate"
   const { invoke } = createHarness();
   const startup = context(invoke("SessionStart", { source: "startup" }));
   assert.match(startup, /^\[a-working-product]/);
-  assert.equal((startup.match(/^\[/gm) ?? []).length, 17);
+  assert.equal((startup.match(/^\[/gm) ?? []).length, 18);
   assert.equal(invoke("UserPromptSubmit", { prompt: "hello" }), null);
 });
 

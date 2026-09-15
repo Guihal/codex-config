@@ -1,7 +1,8 @@
 # Codex Guardrails
 
 Нативные Codex-адаптации выбранных локальных Pi guardrails: injection rules
-и lint-inject. Изменения политики относительно Pi отмечаются явно.
+и lint-inject, защита целей сигналов и восстановление локальных скиллов после
+компакта. Изменения политики относительно Pi отмечаются явно.
 
 ## Ограничение строк команд удалено
 
@@ -11,8 +12,17 @@
 в репозиторном `config.toml`. Injection rules и lint-inject сохранены.
 Ограничения других плагинов и самого Codex этой правкой не меняются.
 
-Оценка следующих переносов из Pi и Claude: [PORTABILITY.md](PORTABILITY.md).
-Это рекомендации, а не список дополнительно включённых расширений.
+Историческая оценка переносов: [PORTABILITY.md](PORTABILITY.md).
+Реализованные изменения версии 0.2.0: [RUNTIME-GUARDS.md](RUNTIME-GUARDS.md).
+
+В 0.2.0 добавлены правило минимальной пользовательской коррекции, запрет
+подгонки тестов ради зелёного, проверка целей kill/pkill/killall/fuser и
+восстановление полных ранее использованных локальных `SKILL.md`.
+Новые хуки требуют Linux, Python 3.10+ и `pgrep`; внешних Python-пакетов нет.
+`PostCompact` только отмечает готовность. Текст возвращается через
+`SessionStart(compact)`, следующий `UserPromptSubmit` или `PreToolUse` с
+однократным запретом старой команды для её пересмотра. Это не замена sandbox.
+Поддерживаемые пути, ограничения и проверка установки описаны в новом документе.
 
 ## Установка и проверка
 
@@ -23,6 +33,7 @@
 
 ```bash
 node --test tests/*.test.mjs
+python3 -m unittest discover -s tests -p 'test_*.py' -v
 python3 /home/penis/.codex/skills/.system/plugin-creator/scripts/validate_plugin.py /home/penis/plugins/codex-guardrails
 ```
 
@@ -37,9 +48,10 @@ Auditor extension в этот plugin не переносится и не изм�
 ## Injection rules
 
 Это stateful-порт реального `/home/penis/.pi/agent/extensions/injection-rules.ts`,
-а не одноразовый startup prompt. Каталог содержит 17 активных правил из
-`/home/penis/.claude/mcp/injection-rules/rules`; policy body сохранены, а имена
-ролей и runtime-тулов адаптированы к Codex.
+а не одноразовый startup prompt. Исходный каталог из 17 правил Claude дополнен
+`user-correction-rebase` из Pi; в `verify-before-done` добавлен anti-gaming
+контракт. Всего 18 правил. Движок и существующая частота напоминаний не менялись;
+новое правило не добавляет отдельного per-input reminder.
 
 Lifecycle:
 
@@ -57,8 +69,10 @@ Lifecycle:
   межпроцессная блокировка защищает параллельные hook-вызовы. Semantic debug
   пишется в `rules-debug.jsonl`.
 
-Codex не передаёт `agent_id` в обычный `PostToolUse`, поэтому такой tool output
-нельзя надёжно приписать субагенту: без явных actor fields он относится к main.
+На старых payload без `agent_id` injection-rules относит tool output к main;
+такое событие нельзя надёжно приписать субагенту. В исследованном текущем Codex
+обычные subagent hooks уже получают actor fields. Новый skill-recovery хранит
+состояние по идентичности потока, а не только по общему `session_id`.
 Hint notify выводится через `systemMessage` вместе со следующим входом, а не
 мгновенным Pi UI toast. `project-structure` этим plugin не меняется.
 
