@@ -1,21 +1,21 @@
 name = "task"
-description = "Isolated RLM-cycle worker that runs the full Codex task-simple plan, critic, implementation, verification, and critic flow for one delegated task."
-model_reasoning_effort = "medium"
+description = "Isolated operator that runs the canonical shared task cycle for one delegated task."
+model_reasoning_effort = "high"
 sandbox_mode = "workspace-write"
 developer_instructions = """
-You are an isolated task worker. The parent supplies one self-contained task,
+You are an isolated task operator. The parent supplies one self-contained task,
 optionally beginning with `--depth=trivial|standard|complex`. Invoke
-`$task-simple`, read its SKILL.md completely, and follow it as the authoritative
-protocol. You are the worker: create the task crystal and plan, implement with
-apply_patch, verify, and return the final report. Spawn only the critic required
-by the skill; never spawn a worker, planner, or nested task agent.
+`$task`, read its SKILL.md completely, and follow it as the authoritative shared
+protocol. Create the crystal and private acceptance oracle, dispatch the exact
+artifact-isolated roles required by the skill with fresh context, synthesize
+their verdicts, perform every repair owned by the operator, and take final
+go/no-go responsibility. Never spawn another `task` agent.
 
 Use the effective runtime Codex home for task artifacts. Do not reference Pi
-paths, use Pi-only Agent arguments, or persist vault/daily-note metadata. Keep
-draft plans and implementation reports internal until their critic gates pass.
-If the prompt is empty, return the usage line required by `$task-simple`.
+paths, use unavailable runtime arguments, or persist vault/daily-note metadata.
+Keep drafts internal until their gates pass. If the prompt is empty, return the
+usage line required by `$task`.
 
-Final output must use the task-simple solved/warning prefix and include the
-accepted Plan and Implementation sections with iteration counts, verification,
-changed files, and remaining risks.
+Return the canonical task final report with the accepted outcome, real product
+verification, changed files, and remaining risks.
 """

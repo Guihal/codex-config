@@ -1,11 +1,12 @@
 approvals_reviewer = "user"
 experimental_compact_prompt_file = "/home/penis/.codex/prompts/rich-compaction.md"
 model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
+model_reasoning_effort = "medium"
 project_doc_fallback_filenames = ["CLAUDE.md"]
 project_doc_max_bytes = 65536
 
 default_permissions = ":danger-full-access"
+service_tier = "default"
 
 [features]
 memories = true
@@ -13,7 +14,7 @@ memories = true
 [memories]
 generate_memories = true
 use_memories = true
-disable_on_external_context = true
+disable_on_external_context = false
 
 [mcp_servers.web-inspector]
 command = "npx"
@@ -36,11 +37,41 @@ args = ["-y", "browser-inspector-mcp"]
 startup_timeout_sec = 30
 tool_timeout_sec = 120
 
+[mcp_servers.figma-console]
+command = "/home/penis/.zcode/cli/figma-console-mcp.sh"
+args = []
+startup_timeout_sec = 30
+tool_timeout_sec = 120
+
 [mcp_servers.computer-use-linux]
 command = "/home/penis/.bun/bin/bun"
 args = ["/usr/projects/cu-scene-proxy/proxy.js"]
 startup_timeout_sec = 30
 tool_timeout_sec = 120
+
+[mcp_servers.computer-use-linux.tools.screenshot]
+approval_mode = "approve"
+
+[mcp_servers.computer-use-linux.tools.perform_action]
+approval_mode = "approve"
+
+[mcp_servers.computer-use-linux.tools.type_text]
+approval_mode = "approve"
+
+[mcp_servers.computer-use-linux.tools.set_value]
+approval_mode = "approve"
+
+[mcp_servers.computer-use-linux.tools.click]
+approval_mode = "approve"
+
+[mcp_servers.computer-use-linux.tools.scroll]
+approval_mode = "approve"
+
+[mcp_servers.computer-use-linux.tools.press_key]
+approval_mode = "approve"
+
+[mcp_servers.computer-use-linux.tools.activate_window]
+approval_mode = "approve"
 
 [mcp_servers.injection-rules]
 command = "/home/penis/.bun/bin/bun"
@@ -65,25 +96,40 @@ args = ["-y", "@playwright/mcp@latest"]
 startup_timeout_sec = 30
 tool_timeout_sec = 120
 
+[mcp_servers.playwright.tools.browser_navigate]
+approval_mode = "approve"
+
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
 env_http_headers = { "Authorization" = "CONTEXT7_API_KEY" }
 startup_timeout_sec = 30
 tool_timeout_sec = 60
 
+[mcp_servers.node_repl]
+args = []
+command = "/usr/lib/chatgpt/resources/cua_node/bin/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/usr/lib/chatgpt/resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/home/penis/.codex:/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
+CODEX_HOME = "/home/penis/.codex"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.908.70816"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/penis/.codex/plugins/cache/openai-bundled/browser/26.908.70816/scripts/browser-service.mjs"}'
+CODEX_CLI_PATH = "/usr/lib/chatgpt/resources/codex"
+
 [agents]
 enabled = true
 max_concurrent_threads_per_session = 3
 max_depth = 2
 interrupt_message = true
-
-[[skills.config]]
-path = "/home/penis/.agents/skills/task-simple/SKILL.md"
-enabled = false
-
-[[skills.config]]
-path = "/home/penis/.agents/skills/task-complex/SKILL.md"
-enabled = false
 
 [projects."/home/penis"]
 trust_level = "trusted"
@@ -166,6 +212,54 @@ trust_level = "trusted"
 [projects."/tmp"]
 trust_level = "trusted"
 
+[projects."/home/penis/projects/user-tel"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/guihal-tasks"]
+trust_level = "trusted"
+
+[projects."/home/penis/Documents/Codex/2026-09-15/new-chat"]
+trust_level = "trusted"
+
+[projects."/home/penis/tmp/documentation-skills-forward-test-HlD3Pg/service-fixture"]
+trust_level = "trusted"
+
+[projects."/home/penis/tmp/documentation-skills-forward-test-CyGvtv/service-fixture"]
+trust_level = "trusted"
+
+[projects."/home/penis/tmp/documentation-skills-forward-test-6CF95i/service-fixture"]
+trust_level = "trusted"
+
+[projects."/home/penis/tmp/documentation-skills-forward-test-1nrvTy/service-fixture"]
+trust_level = "trusted"
+
+[projects."/home/penis/tmp/documentation-skills-forward-test-VAjyX4/service-fixture"]
+trust_level = "trusted"
+
+[projects."/home/penis/tmp/documentation-skills-forward-test-cW71AO/service-fixture"]
+trust_level = "trusted"
+
+[projects."/home/penis/tmp/documentation-skills-forward-test-xhjpxL/service-fixture"]
+trust_level = "trusted"
+
+[projects."/home/penis/Documents/Codex/2026-09-15/realtime-voice-chat"]
+trust_level = "trusted"
+
+[projects."/home/penis/.zcode"]
+trust_level = "trusted"
+
+[projects."/home/penis/Documents/Codex/2026-09-20/new-chat"]
+trust_level = "trusted"
+
+[projects."/home/penis/Documents/Codex/2026-09-21/x20"]
+trust_level = "trusted"
+
+[projects."/home/penis/Documents/Codex/2026-09-21/new-chat"]
+trust_level = "trusted"
+
+[projects."/home/penis/tmp/codex-task-e2e-20260921"]
+trust_level = "trusted"
+
 [plugins."codex-guardrails@personal"]
 enabled = true
 
@@ -194,6 +288,33 @@ enabled = true
 enabled = true
 
 [plugins."control-task@personal"]
+enabled = true
+
+[plugins."codex-app-tools@openai-bundled"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."unified-computer-use@openai-bundled"]
+enabled = true
+
+[plugins."visualize@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."pdf@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[plugins."template-creator@openai-primary-runtime"]
 enabled = true
 
 [hooks.state]
@@ -279,3 +400,16 @@ gpt-6-astra = 4
 
 [notice]
 hide_rate_limit_model_nudge = true
+
+[desktop]
+followUpQueueMode = "steer"
+conversationDetailMode = "STEPS_COMMANDS"
+ambient-suggestions-enabled = true
+
+[marketplaces.openai-bundled]
+source_type = "local"
+source = "/home/penis/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+source_type = "local"
+source = "/home/penis/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"

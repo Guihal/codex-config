@@ -181,8 +181,9 @@ These are durable, project-agnostic rules merged from the user's Claude Code and
 
 ## Task workflows and delegation
 
-- “через таск” / “via task” means read and follow the current `task-simple` skill completely. “через таск комплекс” / “via task-complex” means the explicit `task-complex` workflow.
-- The parent session remains the worker for `task-simple` and `task-complex`; only their required reviewer agents may be spawned.
+- “через таск” / “via task” means read and follow the canonical `task` skill completely. Complexity is selected only through that skill's `--depth=trivial|standard|complex` argument; no parallel task workflow exists.
+- In the `task` cycle the parent session is the operator: it owns the crystal, private acceptance, verdict synthesis, every repair, and final go/no-go. It dispatches only the artifact-isolated roles required by the skill; planner and worker each run once, while reviewer roles are fresh per gate pass.
+- Verified 2026-09-21: Codex roles launched with `fork_turns="none"` receive no task dialog but still inherit applicable global/project `AGENTS.md`. Keep shared reasoning/evidence rules centralized there; do not duplicate them into each role prompt.
 - “через таск субагента” means spawn the configured `task` role through Codex collaboration tools and retain parent-side verification.
 - Outside explicit delegation or workflow instructions, do not spawn agents. When delegation is authorized, use named agents, one writer per file, and verify their real diff/output.
 - A delegation packet includes goal, file/line context, constraints, tried approaches/results, the blocker, and observable success.
