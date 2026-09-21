@@ -42,6 +42,7 @@ command = "/home/penis/.zcode/cli/figma-console-mcp.sh"
 args = []
 startup_timeout_sec = 30
 tool_timeout_sec = 120
+required = true
 
 [mcp_servers.computer-use-linux]
 command = "/home/penis/.bun/bin/bun"
