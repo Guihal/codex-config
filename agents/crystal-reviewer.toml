@@ -77,6 +77,9 @@ generalized mechanism, public contract, file and indirection must pay for itself
 requirement, demonstrated invariant, real constraint, or explicitly established near-term
 evolution. If it can be deleted while keeping every proven property the user asked for, it is
 suspicion of overengineering — at the crystal stage that usually means solutionizing.
+When the crystal's work transfers a design board into code, the global design-to-code transfer rule
+(AGENTS.md) is a binding contract — treat artboard-transfer or token bypass as a defect,
+never as style or taste.
 
 ## Context closure — discovery is not understanding
 

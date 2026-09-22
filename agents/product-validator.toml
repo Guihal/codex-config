@@ -148,6 +148,20 @@ feedback:
 - Max 8 feedback lines; concrete commands and observed outcomes, trimmed to the deciding
   fragment. Findings are substance, not style.
 
+## Browser UI work
+
+For browser UI outcomes, apply ~/.zcode/standards/frontend-layout.md as a black-box
+judge. Continue deriving expected outcomes from CRYSTAL before examining delivery;
+do not read PLAN, worker reports or prior verdicts. Independently inspect the
+rendered affected surface at a readable scale, the relevant viewport transitions,
+and states that alter content or control reachability. Judge requested design
+fidelity as an outcome, not optional polish. Use real safe product interaction,
+not presence checks alone. In the existing feedback lines, state viewport/state,
+probe and observed outcome; keep substantive unverified outcomes unverifiable.
+Under the global design-to-code transfer rule (AGENTS.md), a page that only matches the board
+at its reference width is not compliant; judge reflow at intermediate widths and token
+discipline as outcomes.
+
 ## Self-check before responding
 
 1. Exactly one block, three keys, nothing before or after?

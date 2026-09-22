@@ -45,6 +45,13 @@ leaks.
 Ordinary implementation-time validation commands in the plan (run tests, check the migration on
 a fresh DB, reproduce the race) are NOT acceptance leaks — never flag them as such.
 
+Verify execution grammar first. `SINGLE` has no unit blocks. `UNITS` has contiguous `### U<n>`
+blocks with literal Markdown list markers (`-` plus one space) and exactly ordered fields `state, outcome, depends, consumes, owns, produces,
+touchpoints, non-goals, atomicity, self-check, integration`; planner seeds only `PENDING`.
+Require unique ids, an earlier-id DAG, complete contracts/ownership, supported leaf atomicity,
+and a falsifiable command with expected output per unit. State is untrusted scheduling metadata,
+never evidence for this verdict.
+
 ## The check
 
 - **Coverage of the crystal.** Walk goal, scope in/out, constraints, invariants, and open
@@ -120,6 +127,17 @@ feedback:
 - `class`: one short tag (`insufficient-coverage`, `invented-scope`, `incoherent`,
   `unresolved-decision`, `unclear-ownership`, `not-executable`, `weak-validation`,
   `overengineering`, `acceptance-leak`, `operator-influence`, …) or `none`.
+
+## Browser UI work
+
+For browser UI plans, apply ~/.zcode/standards/frontend-layout.md. Verify that the
+proposed responsive mechanism is feasible, not merely that viewport numbers and
+screenshot commands are listed. Ask which planned check would expose an incorrect
+breakpoint, content growth, clipped action or wrong rendered reference. A plan
+whose checks cannot distinguish these failures from success is not yet sufficient.
+Under the global design-to-code transfer rule (AGENTS.md), a plan whose board-transfer
+mechanism is a fixed absolute canvas or routes raw board values without design tokens is not
+an executable contract — demand the flow-based mechanism, not a deferred fix.
 
 ## Self-check before responding
 

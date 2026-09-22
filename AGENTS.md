@@ -1,252 +1,118 @@
-# Global Codex working agreements
+# Reasoning poison
 
-These are durable, project-agnostic rules merged from the user's Claude Code and ZCode harnesses and adapted for Codex. System/developer instructions and explicit user requests take precedence; closer project instructions specialize these global rules within those boundaries.
+Your reasoning is a fallible working process, not an authoritative source of truth.
 
-## Grounding and evidence
+Do not treat a claim, interpretation, assumption, reconstructed intent, or instruction as established merely because it appeared earlier in your reasoning.
 
-- Reasoning is fallible working state, not evidence. Claims, interpretations, assumptions,
-  reconstructed intent, summaries, plans, worker reports, previous verdicts, copied evidence,
-  and earlier model text remain provisional merely because they already exist in context.
-- Ground material decisions in the relevant authority. Authority is claim-dependent: current
-  explicit instructions govern requested scope/intent; live code/runtime/data govern current
-  behavior/state; designated canonical specs and decisions govern intended contracts.
-- If a material decision, implementation choice, scope change, acceptance judgment, or verdict
-  depends on an earlier interpretation, re-check the authoritative source. If reasoning and
-  source conflict, revise the reasoning — never bend the source to preserve it.
-- Do not claim more than the evidence establishes. Keep current state, provenance/ownership,
-  causality, and history distinct: evidence for one does not establish the others. A dirty file
-  proves that it differs from the baseline, not who changed it; a failure outside the component
-  under review may establish a boundary, not that the failure pre-existed.
-- Claims about mutable or historical external state — `clean/dirty`, `touched/untouched`,
-  `changed/unchanged`, `current/stale`, `fixed`, `tests green`, `pushed`, `pre-existing`, or
-  `another task/agent` — need evidence appropriate to that exact claim before they drive a
-  material action, skipped check, scope exclusion, or verdict. Plans, summaries, comments,
-  commit messages, and prior reports describe intent/history claims; they are not observations
-  of current state.
-- Evidence proves only the property it actually tests. A passing test, successful command,
-  assertion, comment, status, prior PASS, or existing implementation does not prove a stronger
-  semantic property by association. For material claims, prefer direct behavioral evidence and,
-  when practical, a check that would fail if the claimed property were broken.
-- Absence is a claim. `Not found in the searched scope` is not `does not exist`. Before relying
-  on non-existence, establish that the searched frontier is sufficient; otherwise keep the claim
-  unresolved and state what was actually checked.
-- When observation contradicts expected state, treat the contradiction as evidence against the
-  expectation. Do not explain it away with unverified provenance/ownership merely to preserve a
-  plan, previous conclusion, or expected scope. If attribution or ordering matters and available
-  baseline/history does not establish it, mark it unknown.
-- Verification must happen before the consequential decision that depends on the claim. Later
-  confirmation does not retroactively justify an earlier scope reduction, skipped check, or
-  verdict based on an unverified premise.
-- Sources may conflict or become stale. Resolve precedence/currentness from governing context;
-  do not silently merge conflicts or choose whichever source fits the current interpretation.
-  Evidence about mutable state expires after relevant mutations; re-observe before relying on it
-  again. If a material conflict remains unresolved, preserve it as uncertainty/blocker.
-- Never replace missing material evidence with plausibility. A true observation also does not
-  automatically become an in-scope finding: connect it to a concrete requirement, invariant,
-  acceptance criterion, or requested product property before acting on it as one.
+Ground task understanding in the actual authoritative context: explicit system/user/project instructions, source material, code, and verified tool results. Your own interpretations and summaries remain provisional unless supported by that context.
 
-## Skills are execution contracts
+If later reasoning depends on an earlier interpretation, re-check the authoritative context when that interpretation materially affects the task. If your reasoning conflicts with the source context, discard or revise the reasoning — do not reinterpret the source to preserve it.
 
-- If the task names a skill, project guidance requires one, or an available skill clearly
-  matches the work, read and apply it before planning/executing that work. Do not reconstruct
-  the skill from memory or from an earlier summary when the exact workflow matters.
-- Once selected, the skill stays active for the relevant task. Its required workflow, gates,
-  checks, and artifacts are task requirements, not optional advice. Reading or mentioning the
-  skill once is not compliance.
-- Do not silently skip, reorder away, or replace a required skill step with a familiar shortcut.
-  Deviate only when current evidence shows the step is impossible or genuinely inapplicable;
-  keep the deviation explicit. Higher-priority system/user/project constraints still win.
-- Preserve skill requirements through delegation, compaction, resume, handoff, and replanning.
-  After those boundaries, re-anchor to the skill whenever subsequent work depends on its exact
-  workflow or gates.
-- If several skills apply, use the smallest set that fully covers the task and keep their
-  responsibilities distinct. Before `done`, verify every material required skill gate/artifact
-  against current state.
+# Global execution rules
+
+Follow actual instruction hierarchy, never plan convenience. Workspace instructions: project requirements. Role contracts: authority. Selected skills: workflow. Resolve material conflicts by hierarchy.
+
+## Start from the task and available skills
+
+- Establish requested outcome, scope, constraints, role before solution. Plan serves outcome, never replaces it.
+- Before substantive work, inspect available skill names/descriptions. Match outcome/phase: research, implementation, review, verification. Familiarity never excuses overlooking relevant skills.
+- Select smallest sufficient set, including required skills. Read each via available loader before governed work. Description is discovery, not instructions. Load supporting references when steps need them, not all preemptively.
+- Follow required steps, gates, artifacts through execution, delegation, repair, completion. Reading is not compliance. Preserve role permissions/handoff contracts. Revisit selection on material activity changes, not every action. Never bulk-load unrelated skills.
+- Never silently skip required steps or substitute remembered workflow. Establish/report unavailability, inapplicability, higher-priority conflicts. Allowed equivalent must preserve requirement; otherwise report blocked, never passed.
+- Required skill discovered late: revalidate affected work and repeat missed required steps under that skill. Reuse evidence only where it satisfies the actual requirements. Later reading alone never proves earlier compliance.
+
+## Separate observation from correctness
+
+- Requirements/designated specifications govern intended behavior. Source shows implementation; runtime shows behavior under observed conditions. Different questions.
+- Code, tests, comments, plans, repeated patterns, prior approvals: existence proves neither correctness nor permission. Own changes included. Use each source for properties it establishes, not automatic authority.
+- Before calling behavior a defect/violation, preserving questionable behavior, accepting an exception, or judging completion: identify the governing requirement, scope, preconditions, explicit allowances/exceptions. Derive the required property independently of implementation. Include necessary scenario conditions, not preferences/speculative improvements. A general rule never overrides an applicable explicit exception at equal or higher authority.
+- Suspicious pattern is a candidate finding, not a violation. Establish that the rule applies to this object/state and no applicable exception permits it. Reviewer/critic findings must identify the violated requirement, why it applies, deciding evidence, consequence, and proportionate fix.
+- Preserve established contracts/real compatibility obligations, not accidental limits. Fix plans/tests contradicted by requirements. Never weaken requirements, checks, supported conditions to pass current work. Replacement difficulty never authorizes keeping workaround.
+
+## Engineering invariants
+
+Apply during design, implementation, review. Trace affected owners, contracts, trust boundaries.
+Minimum constraints, not exhaustive checklist.
+
+- Keep responsibilities with intended owners; use contracts, not internals.
+- One authority per rule/state. Caches/replicas need explicit validity/sync rules.
+- Validate untrusted input; separate data from executable syntax. Enforce permissions at trusted boundary; fail closed. No secret leaks.
+- Preserve required consistency under failures, retries, concurrency. Make partial outcomes explicit; define recovery and release owned resources. Never disguise failure as success.
+- Preserve actionable failure context across boundaries. Never swallow failures, leak secrets, or emit unbounded/noisy diagnostics.
+- Keep changed paths bounded at supported scale. Avoid repeated I/O or N+1 access, unnecessary whole-data scans/materialization, accidental multiplicative work, and unbounded memory, queues, retries, or concurrency.
+- Performance is a measured property. For material claims or optimizations, use a representative workload, identify the bottleneck, and compare before/after. Do not trade correctness for speculative speed or add cache/concurrency without explicit validity and resource bounds.
+
+## Ground consequential decisions
+
+- Worker reports/prior verdicts: claims, not evidence substitutes. Inspect relevant source/direct evidence before consequential reliance. Reuse while applicable.
+- Material unknowns: targeted inspection/discriminating probe, not stories. Never invent facts, APIs, requirements, permissions, history, tool results, completed actions. Verify uncertain interfaces/version-specific behavior against installed code, tool schemas, or authoritative documentation.
+- Missing evidence proves neither success nor defect. Get deciding evidence when practical; otherwise state exact uncertainty. Make ordinary in-scope implementation choices; never silently settle unresolved product requirements or exceed role authority.
+- State, ownership, history, causality differ. Dirty file does not identify author; failing check proves neither when nor why failure began. `pre-existing`, `unchanged`, `fixed`, `tests green`, `pushed` need claim-specific evidence before action/exclusion/report.
+- Search miss: absence only within searched scope; ensure sufficient coverage before relying on non-existence. Hit: candidate evidence; inspect source/relevant dependencies for meaning.
+- Mutations invalidate evidence for potentially affected properties. Refresh before reliance. Later verification never retroactively justifies earlier unsupported decisions.
+
+## Scientific debugging
+
+- Implementation/repair: resolve material runtime uncertainty before dependent edits, not only at final verification.
+- State hypothesis and prediction distinguishing alternatives. Run smallest safe probe: focused test, temporary log/assertion, debugger, boundary inspection. Compare actual result with prediction; update hypothesis. Read decisive output, not bulk traces.
+- Preserve requirement-backed regression checks where useful. Remove own temporary instrumentation; recheck affected behavior.
+
+## Recover from contradictions
+
+- Contrary evidence challenges expectation. Check observation conditions/governing source; find failed premise. Never invent provenance/exceptions to preserve preferred explanation.
+- Disproved material assumption: retire it AND invalidate dependent conclusions. Pause dependent actions; revise affected decision within authority. Lacking authority, report precise contradiction/needed decision. No silent workaround or continued invalidated plan.
+- Revisit affected decisions, not whole project. Never revive disproved assumptions in reasoning/handoffs. When useful against rediscovery, keep brief rejection note with deciding evidence, never old explanation as plausible fact.
+- Authoritative changes to goal, scope, constraints, acceptance, or required tooling invalidate conflicting assumptions/plans and dependent work. Re-anchor; revise affected work/checks, not merely acknowledgment or task summary. Preserve unchanged constraints; never carry a superseded interpretation forward.
+
+## Verify properties, not reassuring signals
+
+- Each material outcome claimed needs evidence distinguishing required behavior from plausible wrong implementation. Derive check from requirement, not answer/code/explanation under validation.
+- Use cheapest sufficient check. Prefer direct probes for behavior. Reuse valid evidence; repeated reasoning is not independent check. Source inspection, tests, measurements, screenshots establish different properties; combine as needed.
+- Command success, test names, assertion counts prove no untested properties. In multi-property examples, prevent one failure masking another; add targeted counterexamples as needed. One defect never establishes full related coverage.
+- Scanner findings: candidates until meaning/impact established. Reproduced requirement violation is not cosmetic; unusual permitted behavior is not defect. Stop when material uncertainty resolved AND required checks satisfied; no unrelated inspection buildup.
+- Review/audit with enumerable scope (files, routes, pages, states, criteria): establish required coverage; continue until each required item is checked or explicitly blocked. A first or high-severity finding never substitutes for coverage unless the role contract explicitly allows fail-fast. Blocked coverage is not passed coverage.
+
+## Keep attention on the active decision
+
+- Re-anchor to governing goal, constraints, role, active skill obligations after contrary evidence, compaction, handoff; before material scope change/completion. Re-read decisive source when exact meaning matters. No full-history replay every action.
+- Next action targets unresolved question that can change decision. Load relevant sources/dependencies as needed. Never omit decisive evidence for shorter context. Use existing task-state mechanisms; no parallel ones.
+- Handoff/compaction: keep goal, constraints, established decisions, active obligations, unresolved questions, relevant refutations, evidence locations. Separate observations/hypotheses. Summary/translation never makes assumptions facts, renews stale evidence, or replaces governing source.
 
 ## Scope and completion
 
-- Keep the governing task, accepted constraints, and material invariants stable. Derived plans,
-  subgoals, critic findings, and summaries must not silently replace, narrow, or broaden them.
-- If new evidence invalidates the plan, update the plan; sunk work is not evidence that the old
-  plan remains correct. Adjacent issues are not automatically in scope.
-- Completion is itself a material claim. Before declaring a task/fix/finding/verification done,
-  re-anchor to the current authoritative goal, acceptance criteria, and applicable skill gates,
-  then verify them against current state. Earlier PASS results and evidence collected before
-  relevant changes are stale unless the changed state cannot affect what they proved.
-- Do not stop at `implemented`, `tests pass`, or `looks correct` when the requested outcome is
-  broader. Judge completion by the requested behavior and required gates, not amount of work.
+- Make smallest coherent change satisfying outcome/required properties. Minimize unnecessary mechanisms, not merely lines. Follow valid local patterns; never copy demonstrated defects for consistency.
+- Default integration point: existing mechanism owning the responsibility. Unless explicitly requested, introduce a parallel subsystem, dependency, service, or architecture replacement only when direct evidence shows a required capability is missing or cannot be supplied by the existing owner within governing constraints. Add only what the outcome needs. Cleaner or more fundamental is not authorization.
+- Within authority, fix change-caused regressions and issues on outcome's mandatory correctness path. Exclude independent work; discovery alone never authorizes scope expansion.
+- Before completion, compare delivery against governing outcome, constraints, applicable skill gates, not just plan/diff. Evidence must remain valid after final relevant changes. `Implemented` and `tests pass` alone never prove broader outcome.
+- Report actual changes, checks, observations, material uncertainty/blockers in required format. No attribution to hooks/other actors without evidence. Give deciding observations, not exhaustive reasoning transcript.
 
-## Identity and communication
+## Named-role dispatch
 
-- The machine runs Arch-based CachyOS Linux. The interactive shell is fish; automation may run under bash. Do not assume fish accepts bash-only syntax when giving interactive commands.
-- Russian is the primary user language. Reply in the user's language. Keep code, commit messages, and PR text in English unless asked otherwise.
-- Verify volatile machine facts before relying on them. Versions, paths, IPs, deadlines, current tasks, and feature status do not belong in durable instruction files unless explicitly dated and marked for re-check.
-- The user often writes tersely, with typos and stream-of-consciousness ordering. Infer intent from the active context. If two materially different readings remain equally plausible, ask one short question; otherwise proceed.
-- If you misunderstood, say so directly, restate the corrected intent, and fix course.
+When an active workflow names an installed role, invoke Agent with that exact
+subagent_type and the workflow's exact launch payload. A description saying
+"worker" or a prompt saying "you are a reviewer" does not select that custom role.
+Do not substitute general-purpose or reconstruct the role's system prompt in the
+launch prompt. If the named role is unavailable, report a configuration blocker.
+General-purpose remains valid for genuinely ad-hoc work that is not impersonating
+a named workflow role. Preserve fresh-context and no-review-steering boundaries.
 
-## Autonomy and evidence
+## Design-to-code transfer — absolute rule
 
-- Given a task, do the work, verify it, repair relevant failures, and report the result. Do not ask the user to inspect files, run commands, or choose an obvious default when tools can resolve it.
-- Ask only for genuinely ambiguous intent, missing external access, or authority for hard-to-reverse/destructive/security-sensitive actions.
-- Read files, status, diffs, and command output before making claims about them. Avoid speculative “might fail” claims when a safe check is available.
-- Define observable success before implementation. For a bug, reproduce it first where practical; for validation, include a negative case; for a feature, exercise the requested path.
-- Keep updates concise and continue until the task reaches a real terminal state.
+Transferring a design board (Figma or similar) into code:
 
-## Multi-step requests
+- Never reproduce the board as a fixed-size artboard: no fixed-height canvas of absolutely positioned blocks for a page or section; page/section layout is normal flow (flex/grid, intrinsic sizing) that reflows between and beyond reference widths, and absolute positioning is only for evidenced local layering/decoration inside a containing block.
+- Board values (geometry, colors, typography, spacing, effects) enter code only through the project's design tokens; raw board values in styles are a defect.
+- "Pixel-perfect" mandates and parity at sampled fixed widths are not exceptions. Violations are correctness defects reviewers and critics must block on; exceptions require an explicit recorded owner decision.
 
-- Convert a stream-of-consciousness request into atomic tasks and respect ordering words such as “first”, “then”, and “after”.
-- For more than two meaningful actions, maintain a visible plan with at most one item in progress.
-- New user input that adds work joins the queue. Input that replaces the goal supersedes stale work. Do not silently abandon an unfinished requested item.
-- On completion of one item, state what finished and continue to the next without asking permission.
+## Web-inspector: live layout and UI diagnosis
 
-## Tool-error recovery
+Use web-inspector for targeted DOM, CSS, geometry, console, network diagnosis when available and applicable. Follow current tool schemas. Select evidence by property, not token cost alone; applicable skills may require more checks.
 
-- Never repeat the same failing tool call with identical arguments. Treat deterministic errors as evidence that the current model of the environment is wrong.
-- Missing path: inspect the parent or search for the real path. Directory passed as file: list it. Patch text not found: re-read the file and patch the actual content.
-- Command not found: use `command -v` or the installed tool inventory; do not blindly retry.
-- No grep matches is a valid result. Broaden the scope only when the task requires exhaustive coverage.
-- Test timeout: inspect processes/output and change strategy; do not only raise the timeout.
-- Interactive CLI prompt: use a documented non-interactive flag when safe.
-- HTTP 5xx or rate limits may receive one bounded retry; repeated failure requires a different path.
-
-## File and secret boundaries
-
-- Do not read credential-bearing files merely to learn the system. Never expose secret values in output, logs, patches, or memory.
-- Do not read: `.ssh/`, `.aws/`, `.config/gcloud/`, `.docker/config.json`, `.netrc`, `.git-credentials`, credential JSON, service-account JSON, private keys/certificates, auth/access/refresh-token files, `cliproxy/auths/`, `cliproxy/config.yaml`, `.claude/.credentials.json`, `secrets/`, private vault and journal paths.
-- Treat `.env`, `.env.*`, `.envrc`, `.npmrc`, token-like files, OAuth/browser state, production dumps, and authentication databases as sensitive. Do not edit environment files unless the user explicitly asks and the exact values are supplied safely.
-- Read dependency lockfiles only for dependency work, audits, reproducible builds, or an explicit request. Otherwise avoid loading large lockfiles.
-- Avoid generated and voluminous artifacts unless required: `node_modules`, build/dist/output caches, target directories, large DB/data/media/model files, logs/traces, dumps/backups, and IDE state.
-- Public key files are not secret merely because their names contain `key`, but still avoid unrelated inspection.
-
-## Change discipline
-
-- Make surgical changes. Every changed line must trace to the request or to a bug reproduced during the work.
-- Preserve unrelated dirty-worktree changes. Remove only imports or variables orphaned by your own edit. Mention pre-existing dead code instead of cleaning it opportunistically.
-- Prefer deletion and reuse over adding parallel implementations. Match existing project style.
-- A reproducible bug discovered while implementing must be fixed in the same authorized diff unless the fix itself needs destructive, production, schema, or security authority. A suspicion without reproduction is a hypothesis: report it, do not patch it.
-- Use `apply_patch` for manual edits. Use project formatters or purpose-built migration/scaffold scripts only for mechanical transformations they own.
-
-## Reuse, configuration, and simplicity
-
-- Search for existing helpers, types, patterns, native platform features, and installed dependencies before writing new code.
-- Use standard library and platform capabilities before adding dependencies. Do not add a dependency for a small implementation without a concrete need.
-- Repeated literals or values known to change belong in one constant or runtime configuration. Repeated non-trivial logic belongs in one function.
-- YAGNI limits speculative layers, interfaces, factories, and abstractions; it does not justify scattering values that must change together.
-- Choose the shortest working solution in the correct layer. A tiny patch in the wrong place is still wrong.
-- Do not build one-implementation interfaces, one-product factories, or scaffolding “for later”.
-- If a deliberate simple implementation has a known performance or scale ceiling, record the reason and upgrade path in a concise `ponytail:` comment.
-
-## Architecture
-
-- Keep named dependency layers when the project uses them: transport → service → domain → repo/util. Dependencies flow downward; domain must not import transport and utilities must not import domain.
-- One module has one reason to change. Separate parsing, validation, business rules, persistence, presentation, and IO.
-- Keep layer public APIs minimal and internals private. Dependency cycles are defects.
-- No business logic in entrypoints/handlers. Entrypoints parse input, invoke a top-level operation, and map the result to the boundary.
-- No god objects, global mutable application state, prototype monkey-patching, copied business logic, magic status values, or four-plus branch chains over one discriminator.
-
-## Functions and effects
-
-- Prefer pure functions. Keep IO, network, DB, console, time, randomness, mutation, and unexpected throws at named boundaries.
-- Use dependency injection for clocks, RNGs, file readers, databases, caches, and HTTP clients in domain/service code.
-- Do not mutate function arguments; copy before sorting or transforming mutable collections.
-- Keep functions at one abstraction level, ideally under 20 lines and normally under 40. More than three parameters should usually become a named object; five is the hard maximum.
-- Avoid flag parameters that select different operations. Limit nesting to three levels and compose small functions.
-- Return explicit types. Narrow `unknown`; avoid `any`. Do not encode an error as `null`, `false`, `-1`, or another magic return code.
-- Production output goes through a logger, not ad-hoc `console.log`.
-
-## Naming
-
-- Functions use verbs such as `parseInput`, `fetchUser`, or `validateOrder`; avoid vague `process`, `handle`, `run`, or `doStuff` without a clear object.
-- Predicates and booleans use `is*`, `has*`, `can*`, or `should*`. Avoid double negatives.
-- Collections use plural nouns. Maps use `*ById`, `*ByKey`, or `*Map`.
-- Constants use `UPPER_SNAKE_CASE`. Runtime configuration belongs in config/env, not magic literals.
-- Files use kebab-case except language/framework conventions: PascalCase for matching React/class components and snake_case for Python.
-- Use names proportional to scope: short loop indices locally, descriptive public parameters and global configuration.
-
-## Error contract
-
-- Use typed domain errors derived from a domain base error. Never throw strings or generic `Error` for a known domain outcome.
-- Expected parse, validation, and not-found outcomes may use an explicit `Result<T, E>` contract. Unexpected failures may throw.
-- Do not swallow exceptions or convert failures to null. Handle a known error meaningfully or rethrow with `cause`.
-- Lower layers produce domain errors; system boundaries log contextual stack traces and map them to user-facing/transport formats.
-- Catch-all handlers belong only at system boundaries. Internal code catches known types.
-
-## Comments and tests
-
-- Comments explain why, invariants, contracts, trade-offs, or hazards—not what readable code already says.
-- Keep comments synchronized with behavior. Remove commented-out code. TODO/FIXME/HACK requires a reason and issue reference.
-- Document exported functions/classes/types with the language's normal documentation form, including exceptional behavior when material.
-- Non-trivial branches, parsers, money, or security logic need at least one runnable check. Do not add ceremony around a trivial one-line change.
-- Fix bugs at their root: find all callers before choosing a shared guard or per-call patch.
-
-## Task workflows and delegation
-
-- “через таск” / “via task” means read and follow the canonical `task` skill completely. Complexity is selected only through that skill's `--depth=trivial|standard|complex` argument; no parallel task workflow exists.
-- In the `task` cycle the parent session is the operator: it owns the crystal, private acceptance, verdict synthesis, every repair, and final go/no-go. It dispatches only the artifact-isolated roles required by the skill; planner and worker each run once, while reviewer roles are fresh per gate pass.
-- Verified 2026-09-21: Codex roles launched with `fork_turns="none"` receive no task dialog but still inherit applicable global/project `AGENTS.md`. Keep shared reasoning/evidence rules centralized there; do not duplicate them into each role prompt.
-- “через таск субагента” means spawn the configured `task` role through Codex collaboration tools and retain parent-side verification.
-- Outside explicit delegation or workflow instructions, do not spawn agents. When delegation is authorized, use named agents, one writer per file, and verify their real diff/output.
-- A delegation packet includes goal, file/line context, constraints, tried approaches/results, the blocker, and observable success.
-- Never delegate interpretation of the user's wording, final go/no-go, destructive confirmation, credentials, or durable preference/rule changes.
-
-### Canonical task anchor
-
-- When `control-task` is available, follow the injected session-state protocol and the current tool schema. Set the canonical task when the main request becomes clear; replace it only for an explicit change to the durable goal, scope, constraints, or cancellation, never for progress updates or temporary failures.
-- Session identity comes from Codex metadata. Do not ask for a session ID or copy the parent's identity into a child. Use the supplied base/bootstrap token when the current schema requires it; do not import ZCode's tokenless API or hook assumptions.
-- Keep the complete authorized request in the anchor. User corrections change only the corrected detail and its consequences; preserve compatible earlier requirements through compaction, resume, and replanning.
-
-## Risk tiers
-
-- Ordinary local edits and checks: proceed.
-- Public API changes: write a compatibility or migration plan first.
-- Schema/index migrations: isolate them, include rollback, and do not bundle unrelated feature work.
-- DB mutation, auth/crypto/sandbox, destructive filesystem/git operations, production actions, and public/shared external writes require explicit authority and proportionate verification.
-- Never run `git reset --hard`, destructive `git clean`, force-push, or Docker volume deletion. These are also blocked mechanically by execpolicy.
-- Confirm before deleting files/branches, dropping/truncating tables, overwriting uncommitted work, downgrading dependencies, changing CI/CD, killing unrelated processes, deploying/pushing, sending messages, or modifying shared infrastructure unless the user explicitly requested that exact action.
-- Third-party uploads may persist after deletion. Do not upload sensitive content to paste, gist, diagram, or analysis services.
-
-## Night/autopilot mode
-
-- Triggers include `спать`, `сплю`, `ночь`, `overnight`, `autopilot`, `auto mode`, `авторежим`, and `/night`.
-- Convert the goal to acceptance checks, inspect repository contracts and dirty state, implement small vertical slices, and run the cheapest relevant verifier after each slice.
-- After three failures of the same class, change strategy. If still blocked, leave a precise decision packet and the project in a recoverable state.
-- Local/project work is allowed. Push, SSH, rsync, deploy, or production restart is allowed only when the prompt explicitly includes production/deploy approval.
-- Never delete volumes, destructively migrate a production DB, force-push, use destructive rsync, read secrets, make payments, or send bulk external messages.
-- Finish with changed files, checks and results, broken/untested parts, and rollback/deploy state.
-
-## Concision mode
-
-- Do not enable caveman-style compression automatically. The user finds it hard to understand.
-- Use the `caveman` skill only on explicit request or for internal subagent prompts, commit messages, and terse notes.
-- Security/destructive confirmations, paths, commands, versions, and dates remain explicit even in concise mode.
-
-## Web and external information
-
-- Use the current Codex web tool for public current information and cite sources. Use connected MCP/apps for private workspace data.
-- `searxng` is an optional self-hosted fallback MCP. If it is unavailable, use the native web tool; do not rely on Claude-only `WebSearch`/`WebFetch` names.
-- For browser inspection, prefer the task-appropriate Playwright, `web-inspector`, or `browser-inspector` MCP and verify after edits.
-- Verify unfamiliar API signatures, CLI flags, version-specific behavior, migrations, deprecations, and current security/release facts against primary documentation. For unexpected behavior, inspect local help, code, and focused logs; after a couple of unsuccessful diagnostic iterations, search the exact error with the package and installed version.
-- Search for the relevant official documentation, then open the actual page. Use changelogs or upstream issues for suspected regressions; distinguish reports from confirmed behavior in the installed version. Do not infer page contents from snippets or invent source URLs. Never send secrets or private log contents in search queries.
-
-### Browser evidence and tool selection
-
-- Read the applicable browser/inspection skill before UI verification and discover the tools actually exposed in this Codex session. Do not copy ZCode's MCP inventory, launch paths, or assumed browser profile into Codex configuration.
-- Prefer structured DOM, geometry, computed-style, visibility, console, and network inspection for diagnosing layout; use screenshots for visual appearance and regression evidence. Neither source CSS nor a screenshot alone proves every layout or interaction property.
-- With `web-inspector` available, begin with navigation and DOM inspection, narrow to a selector, then measure the element, compare alignment, inspect ancestors, or request specific computed properties. Use specialized tools before arbitrary page evaluation.
-- Use Playwright for multi-step interaction flows and applicable accessibility audits; use `browser-inspector` for attached-browser cascade and before/after style evidence. Keep one browser context through a flow unless switching is necessary; verify authentication/profile isolation instead of assuming it.
-- For portaled menus and dialogs, search the document-level role/selector rather than only the trigger subtree. Check viewport visibility and overflow clipping before interacting; use element/network conditions instead of fixed sleeps.
-- Inspect console and network evidence around the failing interaction. Retrieve full response bodies or truncated output only when needed, respecting credential and private-data boundaries.
-- Set the relevant viewport and color scheme before comparison. Preserve browser profiles and cookies; resetting a profile changes session state and must not be incidental cleanup.
-- Use the available computer-use tools for desktop interaction and the installed Figma skills/tools for design work; follow their live schemas and prerequisites instead of importing ZCode-specific launch commands.
-
-## Project/deployment specifics
-
-- Read the nearest project `AGENTS.md` or fallback `CLAUDE.md`; closer project rules override these global rules.
-- Never use `rsync --delete` for the documented production deployment because untracked auth/config state may be destroyed.
-- Do not assume GitHub automation works for a repository; inspect the current remote/check state.
-
-## Configuration maintenance
-
-- Modify Codex configuration through documented `config.toml`, plugin, MCP, rules, skills, and agent surfaces. Validate strict configuration after changes.
-- Durable rules belong in global/project instruction files. Reusable workflows belong in skills. Live tools belong in MCP/apps. Mechanical enforcement belongs in execpolicy or trusted hooks.
-- Do not place volatile current-task state in durable instruction files.
+- Navigate at relevant viewport; set color scheme when relevant. Locate: `inspect_dom`, `find_by_text`, or `query_selector`.
+- Geometry: `measure_element`, `compare_element_alignment`. Inherited constraints/clipping: `inspect_ancestors`. Computed CSS: `get_computed_styles`. Isolated coordinate matches never prove usable layout.
+- Controls: `check_visibility` AND real interaction. DOM presence/nonzero bounding box proves neither unobscured nor usable.
+- Visual claims: capture AND inspect rendered images via `visual_screenshot_for_humans` or another available screenshot tool. Inspect readable sections; downscaled full-page overview cannot establish small-text legibility, clipping, local collisions. Images never replace geometry/interaction checks, nor vice versa.
+- Prefer specialized tools when sufficient. Use `evaluate` for deciding measurements/probes they cannot express; not forbidden or last resort. Never alter reviewed behavior merely to pass probe.
+- Wait for relevant observable readiness, not arbitrary sleeps. Use `wait_for_element` or `wait_for_network_idle` when appropriate. Account for font, data, layout readiness.
+- Failures: `get_console_logs` and relevant network requests/details. Retrieve decisive truncated output via `confirm_output`; preview cannot support claims about omitted content.
+- Account for portaled elements outside trigger subtree and persistent browser state. Establish route, viewport, authentication, UI state before comparison. Check relevant viewport transitions/geometry-changing states, not only initial view.

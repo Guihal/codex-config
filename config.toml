@@ -1,6 +1,6 @@
 approvals_reviewer = "user"
 experimental_compact_prompt_file = "/home/penis/.codex/prompts/rich-compaction.md"
-model = "gpt-5.6-sol"
+model = "gpt-6-sol"
 model_reasoning_effort = "medium"
 project_doc_fallback_filenames = ["CLAUDE.md"]
 project_doc_max_bytes = 65536
@@ -261,6 +261,21 @@ trust_level = "trusted"
 [projects."/home/penis/tmp/codex-task-e2e-20260921"]
 trust_level = "trusted"
 
+[projects."/home/penis/Documents/Codex/2026-09-21/new-chat-2"]
+trust_level = "trusted"
+
+[projects."/home/penis/Documents/Codex/2026-09-21/new-chat-3"]
+trust_level = "trusted"
+
+[projects."/home/penis/Documents/Codex/2026-09-21/new-chat-4"]
+trust_level = "trusted"
+
+[projects."/home/penis/Documents/Codex/2026-09-21/new-chat-5"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/ nuxt-best-pructices"]
+trust_level = "trusted"
+
 [plugins."codex-guardrails@personal"]
 enabled = true
 
@@ -394,6 +409,9 @@ trusted_hash = "sha256:30664c4c6aa7f6e5cec6b414c5cb71513560d36279588ff8f1dc0ea80
 
 [hooks.state."codex-guardrails@personal:hooks/hooks.json:subagent_start:1:0"]
 trusted_hash = "sha256:e9306174cc254d1feb92b25c7929d4b577ba1fd4c89a2cf1f684d436ebfaa352"
+
+[tui]
+screen_reader_detection_done = true
 
 [tui.model_availability_nux]
 "gpt-5.6-sol" = 2

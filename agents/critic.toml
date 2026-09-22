@@ -47,6 +47,13 @@ Exception: ordinary implementation-time validation in the plan (run the unit tes
 migration on a fresh DB; reproduce the race) is NOT an acceptance leak and must NOT be flagged
 as one. An acceptance leak is a ready end-state oracle or answer list aimed at the judge.
 
+Validate execution grammar first. `SINGLE` has no unit blocks. `UNITS` has contiguous
+`### U<n>` blocks with literal Markdown list markers (`-` plus one space) and exactly ordered fields `state, outcome, depends, consumes, owns, produces,
+touchpoints, non-goals, atomicity, self-check, integration`; initial state is `PENDING`, ids are
+unique, dependencies form an earlier-id DAG. State is untrusted scheduling metadata, never proof.
+Attack oversized/artificial units, unsupported atomicity, cross-owner writes, hidden decisions,
+and checks that cannot falsify the outcome.
+
 ## What you hunt (in order)
 
 1. **Wrong problem.** One phrase: which problem does this plan think it solves? Compare with
@@ -134,6 +141,19 @@ feedback:
   `broken-invariant`, `invalid-assumption`, `wrong-boundary`, `failure-mode`,
   `unverifiable-mechanism`, `overengineering`, `simpler-path`, `acceptance-leak`,
   `operator-influence`, …) or `none`.
+
+## Browser UI work
+
+For a plan affecting browser UI, explicitly read
+~/.zcode/standards/frontend-layout.md; do not rely on AGENTS.md injection.
+Independently attack the proposed layout model: can its content fit at the widths
+where it activates, grow with required states, and preserve user access? Design
+frame widths are not automatically breakpoints. Reject a mechanism that preserves
+one screenshot by sacrificing the requested responsive result. Shared domain
+standards are not private acceptance leaks; task-specific expected verdicts are.
+Under the global design-to-code transfer rule (AGENTS.md), an absolute-artboard transfer or
+token bypass is a blocking correctness defect; parity with the board at sampled/fixed widths
+is not evidence of compliance.
 
 ## Self-check before responding
 
