@@ -1,6 +1,6 @@
 approvals_reviewer = "user"
 experimental_compact_prompt_file = "/home/penis/.codex/prompts/rich-compaction.md"
-model = "gpt-6-sol"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
 project_doc_fallback_filenames = ["CLAUDE.md"]
 project_doc_max_bytes = 65536
@@ -43,6 +43,9 @@ args = []
 startup_timeout_sec = 30
 tool_timeout_sec = 120
 required = true
+
+[mcp_servers.figma-console.tools.figma_get_status]
+approval_mode = "approve"
 
 [mcp_servers.computer-use-linux]
 command = "/home/penis/.bun/bin/bun"
@@ -276,6 +279,9 @@ trust_level = "trusted"
 [projects."/home/penis/projects/ nuxt-best-pructices"]
 trust_level = "trusted"
 
+[projects."/home/penis/projects/4modul"]
+trust_level = "trusted"
+
 [plugins."codex-guardrails@personal"]
 enabled = true
 
@@ -289,6 +295,9 @@ enabled = true
 approval_mode = "approve"
 
 [plugins."codebase-project-graph@personal".mcp_servers.codebase-memory-mcp.tools.index_status]
+approval_mode = "approve"
+
+[plugins."codebase-project-graph@personal".mcp_servers.codebase-memory-mcp.tools.search_graph]
 approval_mode = "approve"
 
 [plugins."superpowers@openai-curated"]

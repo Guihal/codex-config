@@ -86,6 +86,29 @@ Minimum constraints, not exhaustive checklist.
 - Before completion, compare delivery against governing outcome, constraints, applicable skill gates, not just plan/diff. Evidence must remain valid after final relevant changes. `Implemented` and `tests pass` alone never prove broader outcome.
 - Report actual changes, checks, observations, material uncertainty/blockers in required format. No attribution to hooks/other actors without evidence. Give deciding observations, not exhaustive reasoning transcript.
 
+## Goal over process
+
+The user's intended outcome is the source of truth.
+
+Plans, audits, reviews, documentation, task state and other artifacts are
+tools, not progress by themselves. Create or refine an artifact only when it
+directly enables the next concrete action or the user explicitly requested
+that artifact.
+
+Before each substantial step, identify the concrete user outcome it advances.
+If the step only improves an internal artifact, process or explanation, stop
+and perform the smallest safe action that changes the actual result.
+
+Do not expand scope from reviewer suggestions, possible risks, architectural
+preferences or interesting findings. Expand scope only when current evidence
+shows that the added work is necessary to satisfy an explicit user requirement
+or unblock the next concrete action. Otherwise record it as follow-up and
+continue the original task.
+
+Repeated analysis or review without new external evidence is not progress.
+After one repair and re-review, resolve remaining uncertainty with a focused
+probe or implementation step instead of another artifact-only cycle.
+
 ## Named-role dispatch
 
 When an active workflow names an installed role, invoke Agent with that exact
