@@ -1,4 +1,5 @@
 approvals_reviewer = "user"
+approval_policy = "never"
 experimental_compact_prompt_file = "/home/penis/.codex/prompts/rich-compaction.md"
 model = "gpt-5.6-sol"
 model_reasoning_effort = "medium"
@@ -45,6 +46,9 @@ tool_timeout_sec = 120
 required = true
 
 [mcp_servers.figma-console.tools.figma_get_status]
+approval_mode = "approve"
+
+[mcp_servers.figma-console.tools.figma_list_open_files]
 approval_mode = "approve"
 
 [mcp_servers.computer-use-linux]
@@ -289,6 +293,9 @@ approval_mode = "approve"
 approval_mode = "approve"
 
 [plugins."codebase-project-graph@personal".mcp_servers.codebase-memory-mcp.tools.search_graph]
+approval_mode = "approve"
+
+[plugins."codebase-project-graph@personal".mcp_servers.codebase-memory-mcp.tools.check_index_coverage]
 approval_mode = "approve"
 
 [plugins."superpowers@openai-curated"]
