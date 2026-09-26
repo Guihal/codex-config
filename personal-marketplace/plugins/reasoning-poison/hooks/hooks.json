@@ -1,0 +1,41 @@
+{
+  "description": "Inject the reasoning-poison standing rule reminder.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/reasoning-poison-hook.mjs\"",
+            "timeout": 5,
+            "statusMessage": "Refreshing the reasoning-poison reminder"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/reasoning-poison-hook.mjs\"",
+            "timeout": 5,
+            "statusMessage": "Loading the reasoning-poison reminder"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/reasoning-poison-hook.mjs\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "reasoning-poison",
+  "version": "0.1.0",
+  "description": "Periodic injection of the single reasoning-poison standing rule reminder.",
+  "author": {
+    "name": "Local developer"
+  },
+  "interface": {
+    "displayName": "Reasoning Poison",
+    "shortDescription": "Keep reasoning provisional and source-grounded.",
+    "longDescription": "Injects the same reasoning-poison reminder used by ZCode at session starts and on a bounded cadence.",
+    "developerName": "Local developer",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive"],
+    "defaultPrompt": "Explain the active reasoning-poison reminder."
+  }
+}

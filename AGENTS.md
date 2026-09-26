@@ -23,6 +23,20 @@ Follow actual instruction hierarchy, never plan convenience. Workspace instructi
 - Never silently skip required steps or substitute remembered workflow. Establish/report unavailability, inapplicability, higher-priority conflicts. Allowed equivalent must preserve requirement; otherwise report blocked, never passed.
 - Required skill discovered late: revalidate affected work and repeat missed required steps under that skill. Reuse evidence only where it satisfies the actual requirements. Later reading alone never proves earlier compliance.
 
+## Never hand-write base64 or long encoded payloads
+
+- Never write base64 — or any similarly long encoded/binary content — yourself: not into
+  files, not through tool inputs or outputs, not into messages. Typing, re-emitting, or
+  chunking such blobs by hand is a defect even when a tool technically permits it.
+- Binary and visual artifacts move only through channels that produce them natively:
+  dedicated screenshot/export tools that render or save the image themselves, shell
+  commands writing files directly, streaming downloads. If the only path a tool offers is
+  a giant encoded string, that path is unusable — pick another mechanism or report the
+  limitation; never transit the blob.
+- Keep tool payloads bounded: prefer structured reads (numbers, ids, short strings) over
+  bulk dumps; split large reads into targeted chunks at the source instead of moving
+  whole-file content through the conversation.
+
 ## Separate observation from correctness
 
 - Governing instructions and authorized requirements define intended behavior; code/runtime establish implementation and observations. Agent-authored briefs/specs/plans remain derived; filename, "canonical" label, recency or review result grants no independent authority.
@@ -71,6 +85,8 @@ Minimum constraints, not exhaustive checklist.
 - Each material outcome claimed needs evidence distinguishing required behavior from a plausible wrong result. Derive checks from governing requirements, not the solution or its restatement in agent-authored artifacts; satisfying a derived SPEC alone does not establish task correctness.
 - Use cheapest sufficient check. Prefer direct probes for behavior. Reuse valid evidence; repeated reasoning is not independent check. Source inspection, tests, measurements, screenshots establish different properties; combine as needed.
 - Command success, test names, assertion counts prove no untested properties. In multi-property examples, prevent one failure masking another; add targeted counterexamples as needed. One defect never establishes full related coverage.
+- Judge tests by behavioral discrimination, not presence or coverage. Tests should exercise governing contracts and material negative/boundary/state cases; implementation-echo tests and happy-path-only coverage are insufficient.
+- For changed public boundaries (API/UI/CLI/integration), check representative valid, invalid, missing, boundary, authorization/state variants and observable side effects where applicable. A suite that would stay green under a plausible contract-breaking mutation has missing coverage.
 - Scanner findings: candidates until meaning/impact established. Reproduced requirement violation is not cosmetic; unusual permitted behavior is not defect. Stop when material uncertainty resolved AND required checks satisfied; no unrelated inspection buildup.
 - Review/audit with enumerable scope (files, routes, pages, states, criteria): establish required coverage; continue until each required item is checked or explicitly blocked. A first or high-severity finding never substitutes for coverage unless the role contract explicitly allows fail-fast. Blocked coverage is not passed coverage.
 
