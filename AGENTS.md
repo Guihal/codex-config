@@ -145,9 +145,18 @@ Transferring a design board (Figma or similar) into code:
 - Board values (geometry, colors, typography, spacing, effects) enter code only through the project's design tokens; raw board values in styles are a defect.
 - "Pixel-perfect" mandates and parity at sampled fixed widths are not exceptions. Violations are correctness defects reviewers and critics must block on; exceptions require an explicit recorded owner decision.
 
-## Web-inspector: live layout and UI diagnosis
+## Playwright MCP + Web Inspector MCP: browser scenarios and live layout diagnosis
 
-Use web-inspector for targeted DOM, CSS, geometry, console, network diagnosis when available and applicable. Follow current tool schemas. Select evidence by property, not token cost alone; applicable skills may require more checks.
+Verified 2026-09-27: both MCP servers are configured and available. Playwright tools may be deferred rather than shown in the primary tool list; before claiming Playwright is unavailable, inspect the complete/deferred tool registry for `mcp__playwright__*`. Never infer absence from the initially displayed tool list alone.
+
+Use both tools as complementary evidence for browser UI work:
+
+- Playwright MCP (`mcp__playwright__*`) owns browser scenarios, navigation, real interactions, accessibility snapshots, screenshots, and scenario-level console/network evidence.
+- Web Inspector MCP (`mcp__web_inspector__*`) owns targeted DOM inspection, computed styles, box model, geometry, alignment, clipping/overflow, visibility, ancestors, and layout diagnosis. For style or layout questions, use it instead of guessing from source CSS or relying on screenshots alone.
+- For UI/layout verification, establish the route, viewport, authentication, and interaction state with Playwright, then inspect the resulting live state with Web Inspector. Use screenshots for rendered appearance and Web Inspector measurements/computed styles for the cause; neither substitutes for the other.
+- Parallel Codex sessions are supported intentionally: Playwright is configured with `--isolated`, and Web Inspector with `--no-save-session`, so live sessions do not contend for persistent Chromium profiles. Re-test concurrent fresh processes before removing either flag.
+
+Follow current tool schemas. Select evidence by property, not token cost alone; applicable skills may require more checks.
 
 - Navigate at relevant viewport; set color scheme when relevant. Locate: `inspect_dom`, `find_by_text`, or `query_selector`.
 - Geometry: `measure_element`, `compare_element_alignment`. Inherited constraints/clipping: `inspect_ancestors`. Computed CSS: `get_computed_styles`. Isolated coordinate matches never prove usable layout.
@@ -157,3 +166,5 @@ Use web-inspector for targeted DOM, CSS, geometry, console, network diagnosis wh
 - Wait for relevant observable readiness, not arbitrary sleeps. Use `wait_for_element` or `wait_for_network_idle` when appropriate. Account for font, data, layout readiness.
 - Failures: `get_console_logs` and relevant network requests/details. Retrieve decisive truncated output via `confirm_output`; preview cannot support claims about omitted content.
 - Account for portaled elements outside trigger subtree and persistent browser state. Establish route, viewport, authentication, UI state before comparison. Check relevant viewport transitions/geometry-changing states, not only initial view.
+
+самостоятельный чек: `rg -n 'mcp__playwright__\*|mcp__web_inspector__\*|--isolated|--no-save-session' /home/penis/.codex/AGENTS.md /home/penis/.codex/config.toml` + ожидаемый вывод: строки обоих MCP и обоих флагов из `AGENTS.md`, а также `--isolated` и `--no-save-session` в `config.toml`
