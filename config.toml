@@ -19,7 +19,7 @@ disable_on_external_context = false
 
 [mcp_servers.web-inspector]
 command = "npx"
-args = ["-y", "mcp-web-inspector", "--no-save-session"]
+args = ["-y", "mcp-web-inspector", "--no-save-session", "--cdp-port", "0"]
 startup_timeout_sec = 30
 tool_timeout_sec = 120
 

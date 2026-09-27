@@ -154,7 +154,7 @@ Use both tools as complementary evidence for browser UI work:
 - Playwright MCP (`mcp__playwright__*`) owns browser scenarios, navigation, real interactions, accessibility snapshots, screenshots, and scenario-level console/network evidence.
 - Web Inspector MCP (`mcp__web_inspector__*`) owns targeted DOM inspection, computed styles, box model, geometry, alignment, clipping/overflow, visibility, ancestors, and layout diagnosis. For style or layout questions, use it instead of guessing from source CSS or relying on screenshots alone.
 - For UI/layout verification, establish the route, viewport, authentication, and interaction state with Playwright, then inspect the resulting live state with Web Inspector. Use screenshots for rendered appearance and Web Inspector measurements/computed styles for the cause; neither substitutes for the other.
-- Parallel Codex sessions are supported intentionally: Playwright is configured with `--isolated`, and Web Inspector with `--no-save-session`, so live sessions do not contend for persistent Chromium profiles. Re-test concurrent fresh processes before removing either flag.
+- Parallel Codex sessions are supported intentionally: Playwright is configured with `--isolated`, and Web Inspector with `--no-save-session --cdp-port 0`, so live sessions contend for neither persistent Chromium profiles nor lazily claimed CDP ports. External CDP attachment to Web Inspector is intentionally disabled; re-enable it only with a per-process unique port and a concurrent fresh-process verification.
 
 Follow current tool schemas. Select evidence by property, not token cost alone; applicable skills may require more checks.
 
@@ -167,4 +167,4 @@ Follow current tool schemas. Select evidence by property, not token cost alone; 
 - Failures: `get_console_logs` and relevant network requests/details. Retrieve decisive truncated output via `confirm_output`; preview cannot support claims about omitted content.
 - Account for portaled elements outside trigger subtree and persistent browser state. Establish route, viewport, authentication, UI state before comparison. Check relevant viewport transitions/geometry-changing states, not only initial view.
 
-самостоятельный чек: `rg -n 'mcp__playwright__\*|mcp__web_inspector__\*|--isolated|--no-save-session' /home/penis/.codex/AGENTS.md /home/penis/.codex/config.toml` + ожидаемый вывод: строки обоих MCP и обоих флагов из `AGENTS.md`, а также `--isolated` и `--no-save-session` в `config.toml`
+самостоятельный чек: `rg -n 'mcp__playwright__\*|mcp__web_inspector__\*|--isolated|--no-save-session|--cdp-port' /home/penis/.codex/AGENTS.md /home/penis/.codex/config.toml` + ожидаемый вывод: строки обоих MCP и трёх флагов из `AGENTS.md`, а также `--isolated`, `--no-save-session` и `--cdp-port", "0` в `config.toml`
