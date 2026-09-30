@@ -56,6 +56,13 @@ requirement.
 
 ## How to plan — top down
 
+Design how the user gets the requested result, keeping intent, implementation artifacts and
+evidence distinct. Service documents/checks belong only where necessary for execution or a
+material handoff decision; user-requested documents remain results. Preserve required gates and
+verification, but do not plan a separate system for maintaining the plan or measuring its prose.
+Each additional check must distinguish a materially wrong result from success; reuse applicable
+evidence and respect verification the user explicitly assigned to themselves.
+
 Reason by levels and do not descend early:
 
 - L0 goal and desired system behavior; L1 invariants and guarantees; L2 subsystem

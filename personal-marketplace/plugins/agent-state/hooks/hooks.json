@@ -1,0 +1,86 @@
+{
+  "description": "Restore original reusable guides and verify durable recovery sources before compact.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/agent-state-hook.mjs\" SessionStart",
+            "timeout": 5,
+            "additionalContextLimit": 0
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/agent-state-hook.mjs\" SubagentStart",
+            "timeout": 5,
+            "additionalContextLimit": 0
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/agent-state-hook.mjs\" UserPromptSubmit",
+            "timeout": 5,
+            "additionalContextLimit": 0
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/agent-state-hook.mjs\" PostToolUse",
+            "timeout": 5,
+            "additionalContextLimit": 0
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/agent-state-hook.mjs\" PreCompact",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/agent-state-hook.mjs\" PostCompact",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/agent-state-hook.mjs\" SubagentStop",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

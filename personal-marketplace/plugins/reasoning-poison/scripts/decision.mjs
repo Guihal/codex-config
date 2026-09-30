@@ -1,6 +1,9 @@
 import { initialState } from "./state.mjs";
 
 const DEFAULT_INTERVAL = 5;
+const INTENT_INTERVAL = 13;
+// Spec: PS-2 (../README.md#project-sources-contract).
+const SOURCES_INTERVAL = 17;
 const DEFAULT_LARGE_OUTPUT_BYTES = 8192;
 
 function positiveInteger(value, fallback) {
@@ -34,6 +37,7 @@ export function decide(event, current, environment = process.env) {
   const fresh = current === null;
   const next = { ...state };
 
+  // Spec: PS-4 (../README.md#project-sources-contract).
   if (
     event.hook_event_name === "SessionStart" ||
     event.hook_event_name === "SubagentStart"
@@ -42,14 +46,18 @@ export function decide(event, current, environment = process.env) {
       state: {
         ...next,
         completedCalls: 0,
+        intentCompletedCalls: 0,
+        sourcesCompletedCalls: 0,
         injectedTotal: next.injectedTotal + 1,
       },
       inject: true,
+      injectIntent: true,
+      injectSources: true,
     };
   }
 
   if (event.hook_event_name !== "PostToolUse") {
-    return { state: next, inject: false };
+    return { state: next, inject: false, injectIntent: false, injectSources: false };
   }
 
   if (fresh) {
@@ -57,13 +65,23 @@ export function decide(event, current, environment = process.env) {
       state: {
         ...next,
         completedCalls: 0,
+        intentCompletedCalls: 0,
+        sourcesCompletedCalls: 0,
         injectedTotal: next.injectedTotal + 1,
       },
       inject: true,
+      injectIntent: true,
+      injectSources: true,
     };
   }
 
   next.completedCalls += 1;
+  next.intentCompletedCalls += 1;
+  const injectIntent = next.intentCompletedCalls >= INTENT_INTERVAL;
+  if (injectIntent) next.intentCompletedCalls = 0;
+  next.sourcesCompletedCalls += 1;
+  const injectSources = next.sourcesCompletedCalls >= SOURCES_INTERVAL;
+  if (injectSources) next.sourcesCompletedCalls = 0;
   const interval = positiveInteger(
     environment.CODEX_REASONING_POISON_INTERVAL,
     DEFAULT_INTERVAL,
@@ -76,7 +94,9 @@ export function decide(event, current, environment = process.env) {
         injectedTotal: next.injectedTotal + 1,
       },
       inject: true,
+      injectIntent,
+      injectSources,
     };
   }
-  return { state: next, inject: false };
+  return { state: next, inject: false, injectIntent, injectSources };
 }

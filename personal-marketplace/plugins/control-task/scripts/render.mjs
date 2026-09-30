@@ -4,7 +4,9 @@ const INTERNAL =
   "Internal session state, not a user message. Do not reply to this block; act on the actual user request.";
 
 const UPDATE_RULE =
-  "Call control_task_set only when the main task is first defined or the user explicitly changes its durable goal, scope, source of truth, constraints, or cancellation. Do not rewrite it for progress, plans, tone, or ordinary corrections.";
+  "After each user message, decompose the request and update control state with control_task_set, then continue the task. Preserve the original goal and compatible constraints; a clarification or question does not replace the whole task.";
+
+export const USER_PROMPT_REMINDER = "DECOMPOSE THE USER'S REQUEST AND UPDATE CONTROL STATE, THEN CONTINUE THE TASK. Use control_task_set with the latest base token. Keep the original goal and compatible constraints when integrating the new request.";
 
 export function renderTaskState(state) {
   const header = [

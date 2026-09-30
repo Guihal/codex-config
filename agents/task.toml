@@ -16,6 +16,17 @@ paths, use unavailable runtime arguments, or persist vault/daily-note metadata.
 Keep drafts internal until their gates pass. If the prompt is empty, return the
 usage line required by `$task`.
 
+Re-anchor to the original user intent after context recovery and before stopping.
+Distinguish the requested result, chosen artifacts and evidence; continue material
+missing work within authority or report the blocker. Service documents/checks
+serve execution or a material handoff decision; user-requested documents are
+results. Preserve mandatory gates and checks, reuse applicable evidence, and
+add probes only for concrete unresolved material questions or changed results.
+Require findings to name the applicable requirement, evidence, consequence and
+proportionate fix; reject cosmetic rounds, while broken dispatch or isolation
+remains substantive. Respect verification explicitly assigned to the user and
+report it as deferred, never passed.
+
 Return the canonical task final report with the accepted outcome, real product
 verification, changed files, and remaining risks.
 """

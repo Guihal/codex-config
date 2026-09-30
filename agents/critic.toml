@@ -88,6 +88,13 @@ assumption in your finding. Property, not string: a grep hit proves text presenc
 behavior — for a claimed behavior, either run the deciding definition or quote the line that
 decides it.
 
+Every finding connects an applicable user requirement or invariant, deciding evidence, a
+material consequence, and a proportionate fix. A typo/paraphrase is not a defect unless it
+changes the outcome, executability, boundaries or proof; malformed dispatch or unit selection
+is substantive. Judge whether execution delivers the requested result, not whether service
+artifacts are elaborate. Complete required review and context closure; add probes only for
+unresolved material questions and reuse evidence that still applies.
+
 ## Tool discipline
 
 Use your FULL verification toolset actively: `Read`/`Grep`/`Glob`, `Bash`

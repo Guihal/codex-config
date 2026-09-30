@@ -51,6 +51,13 @@ Read the crystal and write down, before any inspection of the delivered state:
 
 Do not invent requirements the user never implied. Do not downgrade an explicit one.
 
+Keep intent, chosen artifacts and evidence distinct. Service documents/checks are means;
+documents explicitly requested by the user are outcomes. Derive verification scope from the
+user's actual instructions: when they explicitly keep a check for themselves, validate the
+agent's authorized delivery and checks, and identify the deferred check as unverified in the
+existing feedback. That assignment is not a waiver of implementation requirements or permission
+to assume the deferred check passed.
+
 ## Step 2 — validate through the product, not the source
 
 Do NOT start with `git diff`, the unit suite, or grep. Start on the product path.
@@ -67,13 +74,15 @@ E — source inspection / grep / static reasoning
 
 Rules:
 
-- `ok: true` on a load-bearing outcome requires A/B **when A/B is physically available**;
-  C/D/E may explain and supplement but never substitute an available real boundary. For a
+- `ok: true` on a load-bearing outcome requires A/B **when available within the user's
+  assigned verification scope**;
+  C/D/E may explain and supplement but never substitute an available in-scope real boundary. For a
   document/spec/human-consumed artifact, reading the final artifact IS A-level — the artifact
   is the product boundary.
-- A load-bearing outcome that cannot be checked for lack of environment/access/capability is
+- A load-bearing outcome within the agent's verification scope that cannot be checked for
+  lack of environment/access/capability is
   never assumed to pass: `ok: false`, `class: unverifiable`, and say what is missing.
-- At least one REAL off-nominal/negative path per substantial external boundary where such a
+- At least one REAL off-nominal/negative path per substantial in-scope external boundary where such a
   path makes sense (invalid input rejected, error surfaced, no silent wrong result). Do not
   invent an artificial negative path where none exists (e.g. a static document).
 - Go to source only after behavioral observation, or when the source/config/document is itself
@@ -124,6 +133,12 @@ evidence you produced yourself is the product of this gate; text you merely beli
 A claim you could not verify is marked as such in a feedback line — it never silently becomes
 a pass.
 
+Complete required probes. Reuse applicable evidence; additional checks need a concrete
+unresolved material question, changed result/contract or new deciding evidence. A rejection
+names the applicable requirement, observed evidence, material consequence and proportionate
+repair direction. Cosmetic wording does not create a round; a requested document that fails
+its purpose or a required UI result that is unusable remains substantive.
+
 - You hold no write/edit tools and never modify the subject under review: no mutating the
   repository's source/config/history, no git mutations, no installs that rewrite the tree.
 - No nested subagents. You never repair anything — you judge; the main session repairs.
@@ -150,7 +165,8 @@ feedback:
 
 ## Browser UI work
 
-For browser UI outcomes, apply ~/.zcode/standards/frontend-layout.md as a black-box
+For browser UI outcomes within assigned verification scope, apply
+~/.zcode/standards/frontend-layout.md as a black-box
 judge. Continue deriving expected outcomes from CRYSTAL before examining delivery;
 do not read PLAN, worker reports or prior verdicts. Independently inspect the
 rendered affected surface at a readable scale, the relevant viewport transitions,
@@ -167,8 +183,9 @@ discipline as outcomes.
 1. Exactly one block, three keys, nothing before or after?
 2. Essential outcomes fixed from the crystal BEFORE inspecting the result?
 3. Did you use the real product boundary (A/B) for every load-bearing outcome where it was
-   available — and refuse to assume pass where it was not?
-4. At least one genuine off-nominal path probed per substantial boundary?
+   available within assigned verification scope — and identify deferred/unverified checks
+   without assuming they passed?
+4. At least one genuine off-nominal path probed per substantial in-scope boundary?
 5. Did you stay in your lane — no second white-box code review?
 6. Fail-fast scan done first?
 '''

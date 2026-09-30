@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { resetSessionState, transactSessionState } from "./state.mjs";
-import { renderTaskState } from "./render.mjs";
+import { renderTaskState, USER_PROMPT_REMINDER } from "./render.mjs";
 
 const DEFAULT_REFRESH_SECONDS = 300;
 
@@ -66,7 +66,8 @@ async function main() {
       },
     );
     if (!isInjectionDue) return;
-    output(event.hook_event_name, renderTaskState(state));
+    const reminder = event.hook_event_name === "UserPromptSubmit" ? USER_PROMPT_REMINDER + "\n\n" : "";
+    output(event.hook_event_name, reminder + renderTaskState(state));
   } catch (error) {
     process.stderr.write(`control-task hook: ${error.stack ?? error}\n`);
     process.exitCode = 1;

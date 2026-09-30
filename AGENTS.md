@@ -23,6 +23,15 @@ Follow actual instruction hierarchy, never plan convenience. Workspace instructi
 - Never silently skip required steps or substitute remembered workflow. Establish/report unavailability, inapplicability, higher-priority conflicts. Allowed equivalent must preserve requirement; otherwise report blocked, never passed.
 - Required skill discovered late: revalidate affected work and repeat missed required steps under that skill. Reuse evidence only where it satisfies the actual requirements. Later reading alone never proves earlier compliance.
 
+## Project sources before decisions
+
+- Before substantive repository work (research, planning, design, implementation, or review), discover existing instructions, README files, requirements, architecture documents, style guides, design systems, contracts, and recorded decisions. Check linked sources, nested documentation, and alternative revisions; AGENTS.md may be an incomplete index.
+- Read mandatory documents completely and other sources sufficiently to understand the affected area and its connected constraints. Listings, headings, search hits, memory, and agent summaries do not substitute for source content. Detect truncated output and retrieve missing portions before relying on it.
+- Concentrate on exceptions, prohibitions, applicability conditions, negative cases, open decisions, and distinctions between examples, permitted options, and requirements. Preserve details that a high-level summary would omit.
+- Identify the governing source for each material decision. A filename, date, or accepted label alone does not resolve conflicting authority. A later decision replaces only what it actually changes; preserve compatible requirements.
+- Before consequential action, verify the concrete decision against the original passage and apply its conditions. Do not declare a source irrelevant merely because it obstructs the chosen approach. If authority remains materially unresolved, pause dependent work and obtain deciding evidence.
+- On entering another area or discovering a missed source, extend the reading and revisit dependent decisions. Reuse still-valid evidence; do not reread the whole project without a decision-relevant reason.
+
 ## Never hand-write base64 or long encoded payloads
 
 - Never write base64 — or any similarly long encoded/binary content — yourself: not into

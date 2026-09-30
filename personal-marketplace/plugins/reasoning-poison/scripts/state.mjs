@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 
 export function resolveStateRoot(environment = process.env) {
   if (environment.CODEX_REASONING_POISON_STATE_DIR) {
@@ -35,7 +36,7 @@ export function sessionFile(event, environment = process.env) {
 }
 
 export function initialState() {
-  return { version: 1, completedCalls: 0, injectedTotal: 0, updatedAt: 0 };
+  return { version: 1, completedCalls: 0, intentCompletedCalls: 0, sourcesCompletedCalls: 0, injectedTotal: 0, updatedAt: 0 };
 }
 
 function requireString(value, name) {
@@ -53,8 +54,41 @@ function normalizeState(value) {
   if (!Number.isInteger(value.injectedTotal) || value.injectedTotal < 0) {
     return null;
   }
+  const intentCompletedCalls = Object.hasOwn(value, "intentCompletedCalls")
+    ? value.intentCompletedCalls
+    : 0;
+  if (!Number.isInteger(intentCompletedCalls) || intentCompletedCalls < 0) {
+    return null;
+  }
+  // Spec: PS-3 (../README.md#project-sources-contract).
+  const sourcesCompletedCalls = Object.hasOwn(value, "sourcesCompletedCalls")
+    ? value.sourcesCompletedCalls
+    : 0;
+  if (!Number.isInteger(sourcesCompletedCalls) || sourcesCompletedCalls < 0) {
+    return null;
+  }
   if (!Number.isFinite(value.updatedAt)) return null;
-  return value;
+  return { ...value, intentCompletedCalls, sourcesCompletedCalls };
+}
+
+// Re-execute the hook under a per-key kernel lock for the entire transaction.
+// --no-fork keeps the descriptor in Node; exit/crash releases it. Never unlink
+// the lock inode: that would allow competing owners. The bounded wait leaves
+// room within the existing five-second hook timeout.
+export function runLockedHook(file, script, input) {
+  fs.mkdirSync(path.dirname(file), { recursive: true, mode: 0o700 });
+  const lock = `${file}.lock`;
+  fs.closeSync(fs.openSync(lock, "a", 0o600));
+  const result = spawnSync("flock", [
+    "--exclusive", "--no-fork", "--timeout", "3", "--conflict-exit-code", "75",
+    lock, process.execPath, script, "--state-locked",
+  ], { input, encoding: "utf8" });
+  if (result.error) throw result.error;
+  if (result.status === 75) throw new Error("session state lock timed out after 3 seconds");
+  if (result.status !== 0) {
+    throw new Error(`locked hook failed (${result.signal ?? result.status}): ${result.stderr.trim()}`);
+  }
+  return result.stdout;
 }
 
 export function readSessionState(file) {

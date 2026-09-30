@@ -1,0 +1,22 @@
+{
+  "name": "agent-state",
+  "version": "0.2.1",
+  "description": "Session guide files, scoped history and exact last-response usage across Codex compaction.",
+  "author": {
+    "name": "Local developer"
+  },
+  "interface": {
+    "displayName": "Agent Guides",
+    "shortDescription": "Carry micro-skills across compaction.",
+    "longDescription": "Save and edit session-bound reusable guides; inject original files with an 80000-byte budget and explicit truncation paths. Imperative pre-compact save reminders and exact last-response usage. Current task state stays in control state.",
+    "developerName": "Local developer",
+    "category": "Developer Tools",
+    "capabilities": [
+      "MCP",
+      "Hooks",
+      "Write"
+    ],
+    "defaultPrompt": "Save a reusable micro-skill and read the original guides."
+  },
+  "mcpServers": "./.mcp.json"
+}

@@ -11,6 +11,12 @@ Hooks inject the task at session start, resume, clear, and compaction; before ev
 user prompt; and after `control_task_set`. During long tool-only turns they refresh
 after `CODEX_CONTROL_TASK_REFRESH_SECONDS` seconds (default: `300`).
 
+After every user message, `UserPromptSubmit` injects the English imperative:
+`DECOMPOSE THE USER'S REQUEST AND UPDATE CONTROL STATE, THEN CONTINUE THE TASK.`
+Decompose the new request, call `control_task_set` with the latest base token and
+complete task definition, then continue. Preserve the original goal and compatible
+constraints when incorporating a clarification, correction or question.
+
 Before Codex starts a subagent, the plugin wraps that subagent's complete launch
 message in an `ACTIVE TASK — SUBAGENT BOOTSTRAP` block. `SubagentStart` creates a
 separate state using the child `agent_id`, and the child records the original launch

@@ -1,8 +1,8 @@
 approvals_reviewer = "user"
 approval_policy = "never"
 experimental_compact_prompt_file = "/home/penis/.codex/prompts/rich-compaction.md"
-model = "gpt-5.6-sol"
-model_reasoning_effort = "medium"
+model = "gpt-6.1-sol"
+model_reasoning_effort = "high"
 project_doc_fallback_filenames = ["CLAUDE.md"]
 project_doc_max_bytes = 65536
 
@@ -38,17 +38,17 @@ args = ["-y", "browser-inspector-mcp"]
 startup_timeout_sec = 30
 tool_timeout_sec = 120
 
-[mcp_servers.figma-console]
-command = "/home/penis/.zcode/cli/figma-console-mcp.sh"
+[mcp_servers.figma-bridge]
+command = "/home/penis/.zcode/cli/figma-bridge-mcp.sh"
 args = []
 startup_timeout_sec = 30
-tool_timeout_sec = 120
+tool_timeout_sec = 360
 required = true
 
-[mcp_servers.figma-console.tools.figma_get_status]
+[mcp_servers.figma-bridge.tools.figma_get_status]
 approval_mode = "approve"
 
-[mcp_servers.figma-console.tools.figma_list_open_files]
+[mcp_servers.figma-bridge.tools.figma_list_open_files]
 approval_mode = "approve"
 
 [mcp_servers.computer-use-linux]
@@ -280,6 +280,9 @@ trust_level = "trusted"
 [projects."/home/penis/projects/4modul"]
 trust_level = "trusted"
 
+[projects."/home/penis/projects/DOMIK"]
+trust_level = "trusted"
+
 [plugins."project-structure@personal"]
 enabled = true
 
@@ -343,6 +346,9 @@ enabled = true
 [plugins."reasoning-poison@personal"]
 enabled = true
 
+[plugins."agent-state@personal"]
+enabled = true
+
 [hooks.state]
 
 [hooks.state."project-structure@personal:hooks/hooks.json:session_start:0:0"]
@@ -387,15 +393,40 @@ trusted_hash = "sha256:42a9981d91737cfb0c392e0f6325e1b05adf4a6b35881c79865f836bc
 [hooks.state."reasoning-poison@personal:hooks/hooks.json:subagent_start:0:0"]
 trusted_hash = "sha256:8b5ac0ca896cc74c72a1884427767de0cd18be693bc32662c6ead10f81081898"
 
+[hooks.state."agent-state@personal:hooks/hooks.json:post_tool_use:0:0"]
+trusted_hash = "sha256:38be670f3099b7c4996c1b0e6df1551068d45053bba98f20bd52d469365ee3f2"
+
+[hooks.state."agent-state@personal:hooks/hooks.json:pre_compact:0:0"]
+trusted_hash = "sha256:9d623532ebe844aa54734fc757337fcca3684b9253a89aeae719ab9f2d6af796"
+
+[hooks.state."agent-state@personal:hooks/hooks.json:post_compact:0:0"]
+trusted_hash = "sha256:06740cdc8960b9dde3fbebbf197f1326fe8db2f59b14616a32a480c954625c81"
+
+[hooks.state."agent-state@personal:hooks/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:0c21ca89a0fce3f274478751725bcf71732d7b205310e534162f19c232e2c1db"
+
+[hooks.state."agent-state@personal:hooks/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:c094b2cce77f445c91bd2e82f359b596beaf301820d6ec6867e1c435a6b2d6ee"
+
+[hooks.state."agent-state@personal:hooks/hooks.json:subagent_start:0:0"]
+trusted_hash = "sha256:ba98184ecabc7000e4d67c5faca4bc1d56bf44b625ff96fb6e80e28e6033a3df"
+
+[hooks.state."agent-state@personal:hooks/hooks.json:subagent_stop:0:0"]
+trusted_hash = "sha256:779d04104b8ceb272020dbce92371ce1d487bb5adf146f87be44bb7912900564"
+
 [tui]
 screen_reader_detection_done = true
 
 [tui.model_availability_nux]
 "gpt-5.6-sol" = 2
 gpt-6-astra = 4
+"gpt-6.1-sol" = 4
 
 [notice]
 hide_rate_limit_model_nudge = true
+
+[notice.model_migrations]
+"gpt-5.6-sol" = "gpt-6-sol"
 
 [desktop]
 followUpQueueMode = "steer"

@@ -9,7 +9,7 @@ export const SET_TOOL = {
   name: "control_task_set",
   title: "Set Session Control Task",
   description:
-    "Set or replace the canonical durable task for only the current Codex session. Use the base token injected by the control-task hook. Call when the main task is first clear or the user explicitly changes its durable definition; never for transient progress or tone.",
+    "Update the canonical control state for only this Codex session after decomposing each user message, then continue the task. Use the latest injected base token. Preserve the original goal and compatible constraints; integrate the new request without replacing the whole task with a question or status report.",
   inputSchema: {
     type: "object",
     properties: {

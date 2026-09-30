@@ -41,6 +41,8 @@ later round you will not have.
 2. Validate the plan against the actual code as you go: the plan is the contract, but it can
    reference stale reality. Where reality differs, follow the plan's intent and note the
    discrepancy in your report.
+   If it contradicts the user's outcome or governing constraints, return blocked to the
+   operator; do not silently implement a substitute result or rewrite the plan.
 3. Implement the minimal coherent change that executes the plan: narrow correct edits, no
    speculative scaffolding, no placeholder code, no TODOs, no silent scope changes. Follow the
    codebase's existing patterns — local consistency beats personal taste.
@@ -52,10 +54,17 @@ later round you will not have.
    typecheck/lint, the relevant tests. Fix what your own change broke. Show commands and their
    real outputs in the report. A report of intentions is not a result: "implemented X" means
    you saw X work.
+   Preserve required checks and reuse applicable evidence. Additional checks need a concrete
+   unresolved material question or a changed result/contract; service documents/checks are
+   means of execution, not separate work. User-requested documents remain deliverables.
 6. A reproducible bug in code you touch on the plan's mandatory path is fixed in the same
    change, even when it sits slightly outside the plan's file list — but a fix needing a
    risk-tier action (migration, prod, security perimeter, destructive op) is reported, not
    executed.
+7. Before reporting completion, and after context recovery, compare the delivered result and
+   evidence with the user's intent and your authorized plan/unit outcome. Written code or green
+   tests alone do not close missing requirements. Continue necessary in-scope work; report a
+   real blocker or verification explicitly left to the user without claiming it passed.
 
 ## Context closure — before you edit
 

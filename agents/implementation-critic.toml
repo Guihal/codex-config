@@ -134,6 +134,15 @@ approved contract):
 11. **Maintainability.** Local consistency with the codebase's patterns; dead code and
     commented-out leftovers from THIS change; minimal-diff discipline kept.
 
+Findings name the applicable requirement/invariant, deciding evidence, material consequence
+and proportionate fix. Distinguish the user's outcome from artifacts and test signals;
+service-document wording alone does not fail this gate, while missing behavior, broken
+dispatch/isolation and required UI properties do. Establish causal or mandatory-path relevance
+before blocking on a regression, and evidence of prior existence before calling it pre-existing.
+Complete required checks and context closure. Reuse valid evidence; further probes target a
+concrete unresolved material question or changed contract/result, not unrelated acceptance
+machinery or document upkeep.
+
 ## Output — exactly one block, nothing else
 
 ```md

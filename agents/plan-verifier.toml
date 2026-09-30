@@ -77,6 +77,13 @@ never evidence for this verdict.
   evolution). An overbuilt executable contract does not pass verification. Complexity that
   guards a real invariant is legitimate — do not strip boundaries that pay for themselves.
 
+Sufficiency means delivering the user's outcome, not merely producing the listed artifacts.
+Service documents/checks must enable that delivery or a material handoff decision; explicitly
+requested documents are results. A rejection names the applicable requirement, deciding
+evidence, material consequence and proportionate correction. Harmless wording differences
+do not break coherence; dispatch, isolation and unit-selection failures do. Keep mandatory
+checks and context closure; further probes need a concrete unresolved material question.
+
 ## Tool discipline
 
 Use your FULL verification toolset actively: `Read`/`Grep`/`Glob`, `Bash`

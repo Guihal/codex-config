@@ -16,6 +16,20 @@ import {
 
 after(cleanupState);
 
+test("every user prompt imperatively requests decomposition and control-state update with current token", () => {
+  const sid = "user-prompt-reminder";
+  const startup = additionalContext(invokeHook({ session_id: sid, hook_event_name: "SessionStart", source: "startup" }));
+  const reminder = /DECOMPOSE THE USER'S REQUEST AND UPDATE CONTROL STATE, THEN CONTINUE THE TASK/;
+  assert.doesNotMatch(startup, reminder);
+  const initial = additionalContext(invokeHook({ session_id: sid, hook_event_name: "UserPromptSubmit" }));
+  assert.match(initial, reminder); assert.equal(baseToken(initial), baseToken(startup));
+  setTask(sid, baseToken(initial), "Original goal and compatible constraints.");
+  const current = additionalContext(invokeHook({ session_id: sid, hook_event_name: "UserPromptSubmit" }));
+  assert.match(current, reminder); assert.match(current, /Original goal and compatible constraints/);
+  assert.notEqual(baseToken(current), baseToken(initial));
+  assert.doesNotMatch(current, /Call control_task_set only when/);
+});
+
 test("setter and hooks preserve one task within one Codex session", () => {
   const sessionId = "session-a";
   const startup = additionalContext(
