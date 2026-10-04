@@ -7,6 +7,11 @@
 [marketplace](personal-marketplace/.agents/plugins/marketplace.json),
 манифесты и README расширений. Правила работы: [AGENTS.md](AGENTS.md).
 
+Правило первичного понимания, первого ответа и пересмотра по источникам находится
+в [AGENTS.md, Start from the task and available skills](AGENTS.md#start-from-the-task-and-available-skills).
+После изменения этого файла начать новый Codex run/session, чтобы загрузить правила;
+работающая сессия может сохранять прежний snapshot.
+
 ## Расширения
 
 | Расширение | Краткое описание | Исходники / состояние |
