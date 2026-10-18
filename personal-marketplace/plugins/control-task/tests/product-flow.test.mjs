@@ -19,7 +19,7 @@ after(cleanupState);
 test("every user prompt imperatively requests decomposition and control-state update with current token", () => {
   const sid = "user-prompt-reminder";
   const startup = additionalContext(invokeHook({ session_id: sid, hook_event_name: "SessionStart", source: "startup" }));
-  const reminder = /DECOMPOSE THE USER'S REQUEST AND UPDATE CONTROL STATE, THEN CONTINUE THE TASK/;
+  const reminder = /UPDATE THE MAIN TASK ONLY AFTER THIS USER MESSAGE, THEN CONTINUE THE TASK/;
   assert.doesNotMatch(startup, reminder);
   const initial = additionalContext(invokeHook({ session_id: sid, hook_event_name: "UserPromptSubmit" }));
   assert.match(initial, reminder); assert.equal(baseToken(initial), baseToken(startup));
@@ -157,4 +157,36 @@ test("setter enforces the runtime reason limit", () => {
   ])[0].result;
   assert.equal(result.isError, true);
   assert.match(result.content[0].text, /reason exceeds 1000 characters/);
+});
+
+test("quantified requirements survive compatible update and compact; policy/catalog retain original authority", () => {
+  const original = "Outcome: animate all applicable UI surfaces. Known targets: Hero, Cards. Coverage: OPEN; not exhaustive.";
+  const updated = original + " Constraint: respect reduced motion.";
+  const sid = "quantified-coverage";
+  const start = additionalContext(invokeHook({ session_id: sid, hook_event_name: "SessionStart", source: "startup" }));
+  assert.equal(setTask(sid, baseToken(start), original).isError, undefined);
+  const first = additionalContext(invokeHook({ session_id: sid, hook_event_name: "SessionStart", source: "compact" }));
+  assert.equal(setTask(sid, baseToken(first), updated).isError, undefined);
+  const resumed = additionalContext(invokeHook({ session_id: sid, hook_event_name: "SessionStart", source: "resume" }));
+  assert.ok(first.includes(original));
+  assert.ok(resumed.includes(updated));
+  for (const body of [first, resumed]) {
+    assert.match(body, /canonical MAIN TASK anchor, NOT current execution state/);
+    assert.match(body, /Missing requirements here are not exclusions/);
+    assert.match(body, /DECOMPOSE STRUCTURE, NOT SEMANTICS/);
+    assert.match(body, /coverage OPEN until exhaustive discovery/);
+    assert.match(body, /ONLY after a user message/);
+    assert.match(body, /stay ONLY in conversation context/);
+    assert.match(body, /Never write them to control-task, agent-state/);
+  }
+  const responses = invokeMcp([
+    { jsonrpc: "2.0", id: 1, method: "initialize", params: {} },
+    { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} },
+  ]);
+  const description = responses[1].result.tools.find(t => t.name === "control_task_set").description;
+  for (const text of [responses[0].result.instructions, description]) {
+    assert.match(text, /DECOMPOSE STRUCTURE, NOT SEMANTICS/);
+    assert.match(text, /Original user messages and governing project sources remain authoritative/);
+    assert.match(text, /coverage OPEN until exhaustive discovery/);
+  }
 });

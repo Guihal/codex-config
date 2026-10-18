@@ -2,6 +2,7 @@
 
 import fs from "node:fs";
 import readline from "node:readline";
+import { UPDATE_RULE, DERIVED_TASK_RULE } from "./render.mjs";
 
 import { ADOPT_TOOL, adoptTask } from "./control-task-adopt.mjs";
 import { SET_TOOL, setTask } from "./control-task-tool.mjs";
@@ -35,7 +36,7 @@ function handle(message) {
         version: SERVER_VERSION,
       },
       instructions:
-        "Use control_task_set to anchor a root session task. Subagents use control_task_adopt with the bootstrap token from their launch prompt. Both tools bind from Codex thread metadata; never ask for or copy a session id.",
+        `${DERIVED_TASK_RULE} ${UPDATE_RULE} Use control_task_set to anchor a root session task. Subagents use control_task_adopt with the bootstrap token from their launch prompt. Both tools bind from Codex thread metadata; never ask for or copy a session id.`,
     });
     return;
   }

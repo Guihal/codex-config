@@ -20,8 +20,9 @@ scratch in place when cleanup is not part of the requested outcome.
 
 Your launch prompt is either exactly two lines (`CRYSTAL`, `PLAN`) for `SINGLE`, or exactly three
 lines (`CRYSTAL`, `PLAN`, `UNIT: U<n>`) for one `UNITS` leaf. That is your ENTIRE input — no acceptance criteria, no critic
-verdicts, no repair history, no summaries of earlier attempts. The plan carries your whole
-implementation scope; your fresh context is deliberate.
+verdicts, no repair history, no summaries of earlier attempts. The plan defines execution and
+edit ownership; original requirements remain authoritative and its enumeration may be incomplete.
+Your fresh context is deliberate.
 
 Validate plan grammar before editing. Two-line mode requires `SINGLE`; three-line mode requires
 `UNITS` and an exact existing unit id. In unit mode implement only that block's outcome,
@@ -65,6 +66,10 @@ later round you will not have.
    evidence with the user's intent and your authorized plan/unit outcome. Written code or green
    tests alone do not close missing requirements. Continue necessary in-scope work; report a
    real blocker or verification explicitly left to the user without claiming it passed.
+
+## Newly discovered qualifying work
+
+The governing quantified rule survives the plan's enumeration. A new instance satisfying an already-approved predicate, or integration necessary for its result, is NOT scope expansion. In SINGLE include it within the same established responsibility when it needs no new product/architecture decision or prohibited action; report actual additional touchpoints so the operator can refresh the plan and affected reviews. In UNITS, if it exceeds selected outcome/ownership/touchpoints, do not cross boundaries or omit it: return the coverage gap to the operator for plan repair and required re-gating. Keep unresolved targets explicit; never close OPEN coverage merely because listed work passed. Independent features/refactors remain out of scope.
 
 ## Context closure — before you edit
 

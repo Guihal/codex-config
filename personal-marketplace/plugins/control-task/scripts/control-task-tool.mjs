@@ -1,3 +1,4 @@
+import { UPDATE_RULE, DERIVED_TASK_RULE } from "./render.mjs";
 import crypto from "node:crypto";
 
 import { rotateToken, transactSessionState } from "./state.mjs";
@@ -9,7 +10,7 @@ export const SET_TOOL = {
   name: "control_task_set",
   title: "Set Session Control Task",
   description:
-    "Update the canonical control state for only this Codex session after decomposing each user message, then continue the task. Use the latest injected base token. Preserve the original goal and compatible constraints; integrate the new request without replacing the whole task with a question or status report.",
+    `${DERIVED_TASK_RULE} ${UPDATE_RULE} Use the latest injected base token; binding is only this Codex session.`,
   inputSchema: {
     type: "object",
     properties: {

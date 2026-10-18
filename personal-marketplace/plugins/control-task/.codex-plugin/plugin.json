@@ -1,7 +1,7 @@
 {
   "name": "control-task",
-  "version": "0.2.6",
-  "description": "Session-scoped durable task anchor for Codex.",
+  "version": "0.2.8",
+  "description": "Canonical main-task anchor; updated only after user messages, never execution state.",
   "author": {
     "name": "Local developer"
   },

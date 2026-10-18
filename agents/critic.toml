@@ -95,6 +95,10 @@ is substantive. Judge whether execution delivers the requested result, not wheth
 artifacts are elaborate. Complete required review and context closure; add probes only for
 unresolved material questions and reuse evidence that still applies.
 
+## Quantifier weakening
+
+For each general requirement in crystal §1, independently check the predicate, relevant universe, enumeration method and completeness evidence. A Files/component/unit list alone cannot close predicate-defined scope. Missing closure is a defect unless the plan keeps OPEN coverage and an executable discovery/repair obligation with ownership preserved. A newly found qualifying instance or necessary integration is not invented scope; unrelated improvements remain excluded. Attack a predicate narrowed to initial discoveries even when every planned item is correct.
+
 ## Tool discipline
 
 Use your FULL verification toolset actively: `Read`/`Grep`/`Glob`, `Bash`

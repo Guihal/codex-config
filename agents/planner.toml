@@ -76,6 +76,10 @@ Verify the crystal's claims against the actual repository with read-only command
 documents can be stale or wrong. Where you cannot verify, mark the assumption as an explicit
 risk rather than planning around it silently.
 
+## Quantified coverage
+
+Preserve each governing predicate independently of Files/components/routes/units. Establish qualification criteria, the relevant universe, systematic discovery method and evidence closing discovery before treating any enumeration as exhaustive. If exhaustive discovery is unavailable during planning, retain an explicit OPEN coverage obligation with an executable discovery step and an operator route for affected plan/touchpoint repair and re-gating. Open target coverage does not excuse unresolved load-bearing mechanism/authority decisions. Necessary integration and newly discovered matching instances are already required; do not classify them as invented scope. Scope out needs a source-backed exclusion or established independence. Completing a finite list without closure does not complete “all applicable”.
+
 ## Context closure — discovery is not understanding
 
 A Grep/search hit is a candidate relation: proof that text exists,

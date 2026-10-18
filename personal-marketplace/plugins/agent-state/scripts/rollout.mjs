@@ -61,9 +61,15 @@ function discover(id) {
 }
 export function bind(state, hint) {
   const binding = inspect(hint || state.binding?.path || discover(state.actor), state.actor);
-  if (state.binding && (state.binding.identity !== binding.identity || state.binding.headerHash !== binding.headerHash)) {
+  // A filesystem identity is a cache key, not the session authority. inspect()
+  // verifies the actor header before we can replace a binding or read guides.
+  if (state.binding && (state.binding.child !== binding.child || state.binding.parent !== binding.parent)) throw new Error('rollout parent/child relationship changed');
+  const replaced = state.binding && (state.binding.identity !== binding.identity || state.binding.headerHash !== binding.headerHash);
+  const rewritten = state.reader && (state.reader.offset > binding.size || (state.reader.anchor && prefixAnchor(binding.path, state.reader.offset) !== state.reader.anchor));
+  if (replaced || rewritten) {
     state.reader = null; state.epoch = null; state.historyFloor = null;
-    throw new Error('rollout identity changed; old metrics and recovery marker invalidated');
+    state.proxyWarned = false; state.saveTriggerKey = null;
+    state.rolloutGeneration = (state.rolloutGeneration ?? 0) + 1;
   }
   state.binding = binding;
   return binding;
@@ -183,7 +189,7 @@ export function history(state, query, token, limit = 8) {
   if (!Number.isInteger(limit) || limit < 1 || limit > 20) throw new Error('limit must be 1..20');
   const b = state.binding;
   if (b.child && !Number.isSafeInteger(state.historyFloor)) throw new Error('child own-history floor unknown; inherited private prefix is excluded by failing closed');
-  const scope = { kind: 'history', query: hash(query), identity: b.identity, header: b.headerHash };
+  const scope = { kind: 'history', query: hash(query), identity: b.identity, header: b.headerHash, generation: state.rolloutGeneration ?? 0 };
   const c = token ? decodeCursor(state, token) : { ...scope, offset: b.child ? state.historyFloor : 0 };
   if (Object.entries(scope).some(([key, value]) => c[key] !== value)) throw new Error('cursor belongs to another query/rollout');
   if (c.anchor && prefixAnchor(b.path, c.offset) !== c.anchor) throw new Error('history prefix changed');

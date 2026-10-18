@@ -118,13 +118,13 @@ NODE_REPL_NODE_MODULE_DIRS = "/usr/lib/chatgpt/resources/cua_node/lib/node_modul
 NODE_REPL_NODE_PATH = "/usr/lib/chatgpt/resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/home/penis/.codex:/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
 CODEX_HOME = "/home/penis/.codex"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab,mcpapps"
 BROWSER_USE_TINYSKY_ENABLED = "1"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.908.70816"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/penis/.codex/plugins/cache/openai-bundled/browser/26.908.70816/scripts/browser-service.mjs"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.930.31730"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/penis/.codex/plugins/cache/openai-bundled/browser/26.930.31730/scripts/browser-service.mjs"}'
 CODEX_CLI_PATH = "/usr/lib/chatgpt/resources/codex"
 
 [agents]
@@ -283,6 +283,12 @@ trust_level = "trusted"
 [projects."/home/penis/projects/DOMIK"]
 trust_level = "trusted"
 
+[projects."/home/penis/projects/negorod"]
+trust_level = "trusted"
+
+[projects."/home/penis/.codex"]
+trust_level = "trusted"
+
 [plugins."project-structure@personal"]
 enabled = true
 
@@ -347,6 +353,9 @@ enabled = true
 enabled = true
 
 [plugins."agent-state@personal"]
+enabled = true
+
+[plugins."code-review@openai-bundled"]
 enabled = true
 
 [hooks.state]
@@ -430,7 +439,7 @@ hide_rate_limit_model_nudge = true
 
 [desktop]
 followUpQueueMode = "steer"
-conversationDetailMode = "STEPS_COMMANDS"
+conversationDetailMode = "STEPS_PROSE"
 ambient-suggestions-enabled = true
 
 [marketplaces.openai-bundled]

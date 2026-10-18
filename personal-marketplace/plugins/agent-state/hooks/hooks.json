@@ -1,5 +1,5 @@
 {
-  "description": "Restore original reusable guides and verify durable recovery sources before compact.",
+  "description": "Deliver original reusable guides and advisory reminders; never block tasks, tools or compaction.",
   "hooks": {
     "SessionStart": [
       {

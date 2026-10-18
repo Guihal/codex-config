@@ -84,6 +84,10 @@ evidence, material consequence and proportionate correction. Harmless wording di
 do not break coherence; dispatch, isolation and unit-selection failures do. Keep mandatory
 checks and context closure; further probes need a concrete unresolved material question.
 
+## Quantified sufficiency
+
+For every quantified/general requirement ask: what qualifies, what is the relevant universe, how is it discovered, and what proves completeness? A finite list without a closure argument is insufficient. When discovery cannot close in planning, require explicit OPEN coverage plus executable discovery, operator plan repair/re-gating and a final closure check. Verify that new matching instances and necessary integration remain required while edit ownership remains enforced. Do not accept “all listed items done” as “all applicable targets covered”.
+
 ## Tool discipline
 
 Use your FULL verification toolset actively: `Read`/`Grep`/`Glob`, `Bash`

@@ -91,11 +91,36 @@ test('parse-size boundary is inclusive and malformed ordinary JSON still fails c
   fs.appendFileSync(file, '{invalid small row}\n');
   await assert.rejects(transaction(A, state => { bind(state); scan(state); }), /JSON|property name/);
 });
-test('rewritten prefix or replaced inode invalidates old telemetry/cursors', async () => {
-  const file = setup(); append(file, sample(A));
-  await transaction(A, state => { bind(state, file); scan(state); });
-  const original = fs.readFileSync(file); fs.writeFileSync(file, original.toString().replace('123', '124'));
-  await assert.rejects(transaction(A, state => { bind(state); scan(state); }), /rewritten/);
+test('verified same-actor rewrite/replacement persists fresh binding and invalidates old history cursors', async () => {
+  const file = setup(); append(file, sample(A)); append(file, message('user', 'needle one')); append(file, message('user', 'needle two'));
+  let token;
+  await transaction(A, state => { bind(state, file); scan(state); token = history(state, 'needle', undefined, 1).next_cursor; state.epoch = { cut: 123, deliveryFloor: null, rootDelivered: false }; state.proxyWarned = true; });
+  const original = fs.readFileSync(file); fs.writeFileSync(file, original.toString().replace('"total_tokens":123', '"total_tokens":124'));
+  await transaction(A, state => { bind(state); assert.equal(state.reader, null); assert.equal(state.epoch, null); assert.equal(state.proxyWarned, false); scan(state); assert.equal(usage(state).latest.total_tokens, 124); assert.throws(() => history(state, 'needle', token), /another query\/rollout/); });
   fs.renameSync(file, file + '.old'); fs.writeFileSync(file, original);
-  await assert.rejects(transaction(A, state => bind(state)), /identity changed/);
+  let identity;
+  await transaction(A, state => { bind(state); scan(state); identity = state.binding.identity; assert.equal(usage(state).latest.total_tokens, 123); assert.equal(state.rolloutGeneration, 2); });
+  await transaction(A, state => { bind(state); assert.equal(state.binding.identity, identity); assert.equal(state.rolloutGeneration, 2); });
+});
+test('stale device identity recovers once; wrong actor or changed parent cannot authorize rebinding', async () => {
+  const file = setup(true); append(file, sample(A));
+  await transaction(A, state => { bind(state, file); scan(state); state.binding.identity = 'old-device:old-inode'; state.historyFloor = 1; });
+  await transaction(A, state => { bind(state); assert.equal(state.reader, null); assert.equal(state.historyFloor, null); assert.equal(state.rolloutGeneration, 1); assert.throws(() => history(state, 'needle'), /floor unknown/); scan(state); });
+  const original = fs.readFileSync(file, 'utf8');
+  fs.writeFileSync(file, original.replace('"id":"'+A+'"', '"id":"'+B+'"'));
+  await assert.rejects(transaction(A, state => bind(state)), /actor\/header mismatch/);
+  fs.writeFileSync(file, original.replace('"parent_thread_id":"'+B+'"', '"parent_thread_id":"01900000-0000-7000-8000-000000000003"'));
+  await assert.rejects(transaction(A, state => bind(state)), /relationship changed/);
+  fs.writeFileSync(file, original);
+  await transaction(A, state => { bind(state); assert.equal(state.rolloutGeneration, 1); });
+});
+
+test('same-actor header refresh and truncation discard stale samples and persist the new binding', async () => {
+  const file = setup(); append(file, sample(A));
+  await transaction(A, state => { bind(state, file); scan(state); assert.equal(usage(state).latest.total_tokens, 123); });
+  fs.writeFileSync(file, fs.readFileSync(file, 'utf8').replace('"source":"cli"', '"source":"cli","cli_version":"new-version"'));
+  await transaction(A, state => { bind(state); scan(state); assert.equal(state.binding.cliVersion, 'new-version'); assert.equal(usage(state).latest.total_tokens, 123); });
+  const header = fs.readFileSync(file, 'utf8').split('\n')[0]+'\n'; fs.writeFileSync(file, header);
+  await transaction(A, state => { bind(state); scan(state); assert.equal(usage(state).latest, null); assert.equal(state.rolloutGeneration, 2); });
+  await transaction(A, state => { bind(state); scan(state); assert.equal(usage(state).latest, null); assert.equal(state.rolloutGeneration, 2); });
 });

@@ -59,3 +59,12 @@ test("current Pi default uses its separate in-process direct-contract branch", (
     /registerRecursionGuardHooks|registerOrchestratorHooks|spawnChild/,
   );
 });
+
+test("compaction preserves original quantified scope and all unresolved obligations independently of recency", () => {
+  const prompt = fs.readFileSync(PROMPT, "utf8");
+  assert.match(prompt, /every still-active unresolved requirement regardless of recency/);
+  assert.match(prompt, /original quantified rule/);
+  assert.match(prompt, /non-exhaustive known targets/);
+  assert.match(prompt, /satisfied with evidence or changed by an authoritative source/);
+  assert.doesNotMatch(prompt, /tied to the latest user request|especially the most recent/);
+});

@@ -93,6 +93,10 @@ leaks.
 (Ordinary implementation-time validation in the plan — run unit tests, check migration on a
 fresh DB — is NOT an acceptance leak.)
 
+## Coverage beyond the current list
+
+Derive quantified scope from crystal §1 and applicable sources, independently of the plan's enumeration. Root review requires the governing predicate, relevant universe, systematic discovery and closure evidence; correct listed instances alone do not prove complete delivery. Unit review retains its ownership boundary and reports gaps to the operator without declaring the whole requirement complete. Newly found matching instances and necessary integration are not scope creep, but writes still require authority. Reject silent omission or closure based solely on Files/unit lists.
+
 ## What you review
 
 Judge the change that actually landed, against the crystal (the task) and the plan (the

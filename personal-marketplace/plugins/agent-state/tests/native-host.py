@@ -37,8 +37,12 @@ class Provider(BaseHTTPRequestHandler):
             if phase=='children' and n==1:items=[call('spawn_agent',{'task_name':'guide_probe_child','fork_turns':'none','message':'Exercise saved reusable guides.'},i,'collaboration')]
             elif phase=='followup' and n==1:items=[call('followup_task',{'target':'/root/guide_probe_child','message':'Apply the original saved future-action guides again.'},i,'collaboration')]
             elif phase=='auto' and n==1:items=[code('true',i)];high=True
+            elif phase=='io_failure' and n==1:items=[code(f'touch {root}/continued-error-task',i)]
             else:items=[msg('ROOT_DONE',i)]
-        elif phase=='followup':items=[msg('CHILD_FOLLOWUP_GUIDED' if CHILD in text and cp in text and PRIVATE not in text and ANCHOR not in text else 'FOLLOWUP_MISSING_GUIDES',i)]
+        elif phase=='followup':
+            # A genuine follow-up task tool reaches the supported PostToolUse
+            # boundary. Do not manufacture continuation of the previous final.
+            items=[code('true',i)] if mode=='final' and n==1 else [msg('CHILD_FOLLOWUP_GUIDED' if CHILD in text and cp in text and PRIVATE not in text and ANCHOR not in text else 'FOLLOWUP_MISSING_GUIDES',i)]
         elif phase!='children':items=[msg('UNRELATED_DONE',i)]
         elif n==1:items=[{'id':'ct_'+str(i),'type':'custom_tool_call','call_id':'call_'+str(i),'name':'exec','input':'text(await tools.mcp__agent_state__agent_state_note('+json.dumps({'title':'Child guide','body':CHILD+' When probing, compare source bytes and read-back.'})+'));'}]
         elif n==2:items=[{'id':'ct_'+str(i),'type':'custom_tool_call','call_id':'call_'+str(i),'name':'exec','input':'text(await tools.mcp__agent_state__agent_state_checkpoint('+json.dumps({'content':cp})+'));'}]
@@ -48,12 +52,6 @@ class Provider(BaseHTTPRequestHandler):
         elif mode=='yielded' and n in (5,7):
             cells=re.findall(r'Script running with cell ID ([^\s\\"]+)',text)
             items=[call('wait',{'cell_id':cells[-1],'yield_time_ms':1000},i)] if cells else [msg('NO_CELL',i)]
-        elif mode=='final' and n==5:
-            # A full 8KiB compatibility guide may truncate other files in
-            # SubagentStop's native reason budget. Follow that instruction and
-            # read the original guides through runtime-generated locators.
-            script='const index=await tools.mcp__agent_state__agent_state_read({}); const data=index.structuredContent ?? JSON.parse(index.content[0].text); const note=data.notes.find(n=>n.title==="Child guide" && n.scope==="own"); if(!note) throw new Error("own original guide absent"); text(data.anchor.content); text(await tools.mcp__agent_state__agent_state_read({note_id:note.note_id}));'
-            items=[{'id':'ct_'+str(i),'type':'custom_tool_call','call_id':'call_'+str(i),'name':'exec','input':script}]
         elif n==(6 if mode in ('yielded','final') else 5):items=[code(f'touch {root}/restored-action',i,mode=='yielded')]
         else:items=[msg('CHILD_DONE' if CHILD in text and cp in text else 'MISSING_GUIDES',i)]
         rid='resp_'+str(i);events=[('response.created',{'response':{'id':rid,'status':'in_progress'}})]
@@ -155,7 +153,7 @@ try:
     phase='auto';c.turn(root_thread,'Exercise automatic compact with a completed upstream usage sample.')
     auto=any(r['phase']=='auto' and r['compact'] for r in requests) and any(r['phase']=='auto' and r['step']>=2 and r['shared'] for r in requests if not r['compact'])
     phase='children';c.turn(root_thread,'Spawn one isolated guide fixture.')
-    child_event=c.until(lambda d:d.get('method')=='item/completed' and d['params'].get('item',{}).get('type')=='agentMessage' and d['params']['item'].get('text') in ('CHILD_DONE','MISSING_GUIDES'))
+    child_event=c.until(lambda d:d.get('method')=='item/completed' and d['params'].get('item',{}).get('type')=='agentMessage' and d['params']['item'].get('text') in ('CHILD_DONE','MISSING_GUIDES','FIRST_CHILD_FINAL'))
     child=child_event['params']['threadId']
     child_requests=[r for r in requests if r['thread']==child and not r['compact']]
     child_complete=c.until(lambda d:d.get('method')=='turn/completed' and d['params']['threadId']==child)
@@ -163,15 +161,24 @@ try:
     def followup_message(d):return d.get('method')=='item/completed' and d['params'].get('threadId')==child and d['params'].get('item',{}).get('type')=='agentMessage'
     followup_event=next((d for d in c.events[start:] if followup_message(d)),None) or c.until(followup_message)
     followup=followup_event['params']['item']['text']=='CHILD_FOLLOWUP_GUIDED'
-    # Exercise the production PreCompact guard with a corrupt durable anchor,
-    # then restore the same original bytes and retry. No reset/provider compact
-    # request may occur while the guard cannot verify its recovery source.
-    cpfile=root/'guide-state'/'sessions'/hashlib.sha256(root_thread.encode()).hexdigest()/'checkpoint.json'
+    # Simulate a saved device key from a previous mount in this disposable
+    # actor only; the real host continues to own and append its rollout.
+    actor_dir=root/'guide-state'/'sessions'/hashlib.sha256(root_thread.encode()).hexdigest()
+    statefile=actor_dir/'state.json';oldstate=json.loads(statefile.read_text())
+    oldstate['binding']['identity']='stale-device-key';statefile.write_text(json.dumps(oldstate))
+    phase='rebind';rebound_turn=c.turn(root_thread,'Continue through a changed filesystem cache identity.')
+    rebound=json.loads(statefile.read_text())
+    binding_recovered=rebound_turn['params']['turn']['status']=='completed' and rebound['binding']['identity']!='stale-device-key' and requests[-1]['shared']
+    # A corrupt optional guide cannot guard/interrupt native reset. Keep it
+    # corrupt while the next real task executes a tool, then restore its bytes.
+    cpfile=actor_dir/'checkpoint.json'
     beforecp=cpfile.read_bytes();cpfile.write_text('{corrupt fixture')
     phase='io_failure';before_requests=len(requests)
     c.req('thread/compact/start',{'threadId':root_thread})
-    stopped=c.until(lambda d:d.get('method')=='turn/completed' and d['params']['threadId']==root_thread)
-    guard_stopped=stopped['params']['turn']['status']=='interrupted' and not any(r['compact'] for r in requests[before_requests:])
+    compact_done=c.until(lambda d:d.get('method')=='turn/completed' and d['params']['threadId']==root_thread)
+    guard_nonblocking=compact_done['params']['turn']['status']=='completed' and any(r['compact'] for r in requests[before_requests:])
+    continued=c.turn(root_thread,'Continue the actual task while optional guide storage is corrupt.')
+    continues_task=continued['params']['turn']['status']=='completed' and (root/'continued-error-task').exists() and requests[-1]['shared'] and cpfile.read_text()=='{corrupt fixture'
     cpfile.write_bytes(beforecp);phase='io_repaired';c.req('thread/compact/start',{'threadId':root_thread})
     repaired=c.until(lambda d:d.get('method')=='turn/completed' and d['params']['threadId']==root_thread)
     guard_repaired=repaired['params']['turn']['status']=='completed' and any(r['compact'] and r['phase']=='io_repaired' for r in requests)
@@ -186,10 +193,16 @@ try:
     report=c.tool(root_thread,'agent_state_read',{});search=c.tool(root_thread,'agent_state_history',{'query':'Establish a normal response'})
     full=c.tool(root_thread,'agent_state_read',{'note_id':shared['note_id']})
     errors=[e['params']['run'] for e in c.events if e.get('method')=='hook/completed' and '/agent-state/' in e['params']['run'].get('sourcePath','') and e['params']['run']['status']=='failed']
-    result={'scratch':str(root),'installed_path':install['installedPath'],'mode':mode,'native_hooks':len(selected),'requests':requests,'root_manual_recovered':manual,'oversized_record_compact_completed':oversized_compact['params']['turn']['status']=='completed' and report['usage']['rollout_coverage']['skipped_records']>=1,'root_auto_recovered':auto,'root_fresh_resume_recovered':resumed,'child_initial_shared_only':bool(child_requests and child_requests[0]['shared'] and not child_requests[0]['private'] and not child_requests[0]['parent_anchor']),'child_original_guides_recovered':any(r['child'] and r['full_child_anchor'] for r in child_requests if r['step']>=5),'child_after_recovery_action':(root/'restored-action').exists(),'child_final':child_event['params']['item']['text'],'child_v2_followup':followup,'unrelated_isolated':isolated,'corrupt_checkpoint_stops_reset':guard_stopped,'storage_repair_allows_retry':guard_repaired,'ledger_unchanged':pathlib.Path(shared['path']).read_bytes()==original,'history_before_compact_found':bool(search['matches']),'original_read':SHARED in full['content'],'exact_sample':report['usage']['latest'],'uncalibrated':report['usage']['native_cutoff'] is None,'failed_hooks':errors,'tool_count':len(inventory.get('data',[{}])[0].get('tools',{}))}
+    result={'scratch':str(root),'installed_path':install['installedPath'],'mode':mode,'native_hooks':len(selected),'requests':requests,'root_manual_recovered':manual,'oversized_record_compact_completed':oversized_compact['params']['turn']['status']=='completed' and report['usage']['rollout_coverage']['skipped_records']>=1,'root_auto_recovered':auto,'root_fresh_resume_recovered':resumed,'child_initial_shared_only':bool(child_requests and child_requests[0]['shared'] and not child_requests[0]['private'] and not child_requests[0]['parent_anchor']),'child_original_guides_recovered':any(r['child'] and r['full_child_anchor'] for r in child_requests if r['step']>=5),'child_after_recovery_action':(root/'restored-action').exists(),'child_final':child_event['params']['item']['text'],'child_v2_followup':followup,'unrelated_isolated':isolated,'corrupt_checkpoint_allows_compact':guard_nonblocking,'continues_task_through_degradation':continues_task,'changed_binding_recovers':binding_recovered,'storage_repair_allows_retry':guard_repaired,'ledger_unchanged':pathlib.Path(shared['path']).read_bytes()==original,'history_before_compact_found':bool(search['matches']),'original_read':SHARED in full['content'],'exact_sample':report['usage']['latest'],'uncalibrated':report['usage']['native_cutoff'] is None,'failed_hooks':errors,'tool_count':len(inventory.get('data',[{}])[0].get('tools',{}))}
     (root/'result.json').write_text(json.dumps(result,indent=2)+'\n')
-    checks=['root_manual_recovered','oversized_record_compact_completed','root_auto_recovered','root_fresh_resume_recovered','child_initial_shared_only','child_original_guides_recovered','child_after_recovery_action','child_v2_followup','unrelated_isolated','corrupt_checkpoint_stops_reset','storage_repair_allows_retry','ledger_unchanged','history_before_compact_found','original_read','uncalibrated']
-    assert all(result[k] for k in checks) and result['child_final']=='CHILD_DONE' and not errors,result
+    checks=['root_manual_recovered','oversized_record_compact_completed','root_auto_recovered','root_fresh_resume_recovered','child_initial_shared_only','child_v2_followup','unrelated_isolated','corrupt_checkpoint_allows_compact','continues_task_through_degradation','changed_binding_recovers','storage_repair_allows_retry','ledger_unchanged','history_before_compact_found','original_read','uncalibrated']
+    if mode=='final':
+        result['final_child_not_forced']=result['child_final']=='FIRST_CHILD_FINAL' and not any(r['step']>4 for r in child_requests)
+        checks.append('final_child_not_forced')
+    else:
+        checks+=['child_original_guides_recovered','child_after_recovery_action']
+        assert result['child_final']=='CHILD_DONE', result
+    assert child_complete['params']['turn']['status']=='completed' and all(result[k] for k in checks) and not errors,result
     print(json.dumps({k:v for k,v in result.items() if k!='requests'},ensure_ascii=False))
 finally:
     if c and c.p.poll() is None:c.close()

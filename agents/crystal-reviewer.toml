@@ -97,6 +97,10 @@ relations; read load-bearing hits IN FULL and verify their semantics
 reason it cannot affect the verdict). A verdict resting on an unverified or open frontier is
 not evidence-based review.
 
+## Quantifier preservation
+
+When §1 contains a general/quantified requirement (“all”, “every”, “everywhere”, “throughout”, “where applicable”, etc.), §2 must preserve its strength and applicability as a general predicate. A finite list is insufficient unless §1 defines that closed set or independent evidence establishes exhaustive coverage. Examples/discovered instances supplement the rule, never replace it. “Animate everywhere” → “animate Hero, Cards, FAQ” is `scope-too-narrow` even when every listed item is correct. Check Scope out against explicit exclusions or established independence, never omission from the current list.
+
 ## Tool discipline
 
 Use your FULL verification toolset actively: `Read`/`Grep`/`Glob`, `Bash`

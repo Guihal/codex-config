@@ -26,6 +26,16 @@ Follow actual instruction hierarchy, never plan convenience. Workspace instructi
 - Never silently skip required steps or substitute remembered workflow. Establish/report unavailability, inapplicability, higher-priority conflicts. Allowed equivalent must preserve requirement; otherwise report blocked, never passed.
 - Required skill discovered late: revalidate affected work and repeat missed required steps under that skill. Reuse evidence only where it satisfies the actual requirements. Later reading alone never proves earlier compliance.
 
+## Preserve quantified scope
+
+Preserve the strength, form, conditions and exceptions of the user's scope. An explicitly bounded list defines closed membership. General requirements such as “all”, “every”, “everywhere”, “throughout”, “across the project”, “where applicable”, and equivalents define membership by a predicate over a relevant universe; they are not shorthand for the finite instances currently known. Do not weaken or enlarge that predicate.
+
+Never replace a general requirement with an agent-produced enumeration unless the governing source explicitly bounds the set or evidence establishes the enumeration is exhaustive. Examples, Files/touchpoints, discovered components and work units supplement the rule, never replace it. Absence from such a list is not an exclusion.
+
+For predicate-defined scope, preserve the original rule; establish qualification criteria and the relevant universe from governing sources; discover targets systematically. Keep coverage OPEN while qualifying targets may remain undiscovered. Record known targets as non-exhaustive coverage. Close discovery only with evidence that the relevant universe was exhausted under the required conditions; a file count or initial search is no closure argument. Completing discovered targets alone does not close the requirement. Relevant changes invalidate affected closure evidence. Blocked or unverified targets remain unresolved, not completed.
+
+Decomposition splits execution, never semantics. A newly discovered qualifying instance is already in scope. Work necessary for the requested behavior to function, including dependencies and integration, is required even when not individually named; it is not scope expansion. Minimize implementation complexity among solutions satisfying the complete outcome. Independent improvements remain outside scope. Investigation may cross ownership boundaries; mutations still respect authority. If necessary work exceeds worker ownership or needs a new product/architecture decision, return the gap to the operator for plan repair and required re-gating; never drop the obligation.
+
 ## Project sources before decisions
 
 - Before substantive repository work (research, planning, design, implementation, or review), discover existing instructions, README files, requirements, architecture documents, style guides, design systems, contracts, and recorded decisions. Check linked sources, nested documentation, and alternative revisions; AGENTS.md may be an incomplete index.
@@ -94,6 +104,8 @@ Minimum constraints, not exhaustive checklist.
 
 ## Verify properties, not reassuring signals
 
+- Working functionality must be confirmed through actual runtime behavior and relevant logs. Passing tests, builds, type checks and reviewer verdicts alone do not establish that the product works. Exercise the real scenario, inspect its observable result and corresponding logs, and report the conditions and any unverified behavior.
+- Keep the focus on solving the user's task. Do not turn writing tests or external verification scripts into a substitute for implementation. Use native tools and existing mechanisms; perform only focused checks that resolve a concrete uncertainty about the requested behavior.
 - Each material outcome claimed needs evidence distinguishing required behavior from a plausible wrong result. Derive checks from governing requirements, not the solution or its restatement in agent-authored artifacts; satisfying a derived SPEC alone does not establish task correctness.
 - Use cheapest sufficient check. Prefer direct probes for behavior. Reuse valid evidence; repeated reasoning is not independent check. Source inspection, tests, measurements, screenshots establish different properties; combine as needed.
 - Command success, test names, assertion counts prove no untested properties. In multi-property examples, prevent one failure masking another; add targeted counterexamples as needed. One defect never establishes full related coverage.
@@ -101,6 +113,8 @@ Minimum constraints, not exhaustive checklist.
 - For changed public boundaries (API/UI/CLI/integration), check representative valid, invalid, missing, boundary, authorization/state variants and observable side effects where applicable. A suite that would stay green under a plausible contract-breaking mutation has missing coverage.
 - Scanner findings: candidates until meaning/impact established. Reproduced requirement violation is not cosmetic; unusual permitted behavior is not defect. Stop when material uncertainty resolved AND required checks satisfied; no unrelated inspection buildup.
 - Review/audit with enumerable scope (files, routes, pages, states, criteria): establish required coverage; continue until each required item is checked or explicitly blocked. A first or high-severity finding never substitutes for coverage unless the role contract explicitly allows fail-fast. Blocked coverage is not passed coverage.
+
+- Explicitly enumerated scope: cover every member. Predicate-defined scope: establish the relevant universe or keep coverage open; never silently substitute the current enumeration for the governing predicate.
 
 ## Keep attention on the active decision
 

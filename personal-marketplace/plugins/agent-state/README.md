@@ -1,7 +1,9 @@
 # Agent Guides for Codex
 
+Only reusable micro-skills belong in agent-state: applicability, procedure, pitfalls and verification for future actions. Never save execution state, progress, agents, temporary parameters, measurements, test results or next-step reports in guides or any durable reinjected artifact. Execution state stays only in conversation context. Control-task stores only the complete main task and requirements, updated only after user messages.
+
 `agent-state@personal` сохраняет reusable micro-skills и гайды в папке сессии.
-Текущие цели, прогресс и статус остаются в разговоре/control state. Содержимое
+Текущие цели, прогресс и статус остаются в контексте разговора. Содержимое
 файлов не пересжимается в summary.
 
 ## Тулы
@@ -30,8 +32,7 @@ preamble})`. Обычный предел — **80000 байт UTF-8**, вклю�
 и пути. Сборка последовательная в памяти: полное содержимое, если помещается;
 иначе UTF-8 safe обрезка и `INJECTION TRUNCATED` с полными путями всех обрезанных
 или пропущенных файлов. Оригиналы не изменяются. Если даже пути не помещаются,
-возвращается явная ошибка. Для native SubagentStop reason действует отдельный
-лимит9KiB через ту же абстракцию.
+инжект возвращает явную advisory деградацию; работа агента продолжается.
 
 Перед компактным порогом английский императив:
 `YOU MUST SAVE IMPORTANT REUSABLE GUIDES NOW using agent_state_note ... Then CONTINUE THE TASK.`
@@ -52,13 +53,16 @@ PostCompact, SubagentStop. На старте/resume/compact/user prompt, каж�
 после save/edit и при approaching cutoff инжектятся оригинальные файлы.
 PreCompact не создаёт отдельного recovery index и не требует authored anchor;
 проверяет доступность разрешённых оригиналов. Реальная ошибка binding/storage
-или corrupt optional guide остаётся явной; PreCompact может остановить компакт.
+или corrupt optional guide остаётся явной advisory деградацией. Ни один хук
+не останавливает task/tools/compact и не требует дополнительной генерации.
+Сбой telemetry сбрасывает stale sample, но читаемые разрешённые гайды остаются
+доступны; повреждённые оригиналы не перезаписываются.
 
 Root получает файлы до следующего inference на SessionStart(compact).
 Codex0.159.1 пропускает SessionStart после child compact: первый child inference
 или tool может предшествовать восстановлению. PostToolUse возвращает файлы
-для следующего inference; final-only SubagentStop выдаёт bounded continuation
-и требует новую генерацию. Это ограничение native event lifecycle, не гарантия
+для следующего inference; final-only SubagentStop принимает завершение
+без forced continuation. Это ограничение native event lifecycle, не гарантия
 доставки перед первым child inference. Code Mode nested UUID не считаются
 model response-item IDs; плагин не вмешивается в native tool authorization.
 
@@ -89,6 +93,11 @@ Rollout scanner ограничен8MiB/call с2MiB look-ahead; JSON parse max2Mi
 Большие строки пропускаются порциями без материализации. Coverage/skip paths
 явные; pre-gap exact sample сбрасывается. Pending catch-up: `usage.latest=null`.
 Original rollout только читается. Guide writes не зависят от oversized rows.
+Filesystem identity — cache key, а не ID сессии: при verified same-actor
+replacement/rewrite код сохраняет новую привязку, сбрасывает reader/epoch/
+history floor/reminder и инвалидирует history cursors. Смена actor или
+parent/child relationship не разрешает чужие гайды; ошибка остаётся advisory
+для хука и ошибкой для тула.
 
 Linux `flock` на постоянном private inode `mutex` освобождается ядром при смерти
 процесса. Wait1.2s; legacy gate может добавить1.2s. Proven-dead owner recoverable
@@ -105,9 +114,16 @@ Runtime files/cache/sessions не входят в authored configuration reposit
 
 `node --test tests/*.test.mjs`: persistence/edit/cursors, UTF-8 injection budget,
 scope, exact usage, config candidates, concurrent writes/crash recovery, I/O
-failure, oversized rollout и final-only generation.
+failure, oversized rollout, все зарегистрированные hook error paths и
+final-only completion без дополнительной генерации.
 `node scripts/probe.mjs integration`: disposable app-server/synthetic Responses
 fixture для lifecycle. Synthetic transport evidence не доказывает выбор тула
 реальной моделью. После upgrades повторить проверку installed event contracts.
 Hooks reference: https://learn.chatgpt.com/docs/hooks.
 Native experimental context management не включается этим плагином.
+
+## Derived guide authority
+
+Agent-written procedures are advice, not sources of task requirements, exclusions, permissions or complete coverage. Check them against original user/project sources. Current task interpretations and review verdicts do not belong in reusable guides or independent review inputs. Original-file fidelity is a storage guarantee, not semantic authority. Existing scope, injection budgets, projection and save ownership are unchanged.
+
+самостоятельный чек: `TMPDIR=/home/penis/tmp node --test tests/*.test.mjs` + ожидаемый вывод: exit 0/fail 0; real recovery/projection includes the authority policy and preserves original guide bytes.

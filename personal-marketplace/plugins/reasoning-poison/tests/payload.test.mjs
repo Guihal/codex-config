@@ -10,15 +10,14 @@ const ZCODE_PAYLOAD = new URL(
   import.meta.url,
 );
 
-test("PS-1: all three Codex reminder texts are byte-identical to the ZCode source payloads", async () => {
-  const source = fs.readFileSync(ZCODE_PAYLOAD, "utf8");
-  const moduleUrl = `${ZCODE_PAYLOAD.href}?test=${crypto.randomUUID()}`;
-  const { REMINDER_TEXT: zcodeReminder, USER_INTENT_REMINDER_TEXT: zcodeIntent, PROJECT_SOURCES_REMINDER_TEXT: zcodeSources } = await import(moduleUrl);
-  assert.match(source, /v0\.1\.2/);
-  assert.strictEqual(REMINDER_TEXT, zcodeReminder);
-  assert.strictEqual(USER_INTENT_REMINDER_TEXT, zcodeIntent);
-  assert.strictEqual(PROJECT_SOURCES_REMINDER_TEXT, zcodeSources);
-  assert.ok(REMINDER_TEXT.endsWith("binding.\n"));
+test("both clients deliver quantified scope while retaining their own authorized payloads", async () => {
+  const { USER_INTENT_REMINDER_TEXT: zcodeIntent } = await import(ZCODE_PAYLOAD.href);
+  for (const text of [USER_INTENT_REMINDER_TEXT, zcodeIntent]) {
+    assert.match(text, /requirements independently of discovered lists/);
+    assert.match(text, /coverage OPEN until systematic discovery/);
+    assert.match(text, /necessary integration are already in scope/);
+    assert.match(text, /repair derived state\/plans/);
+  }
 });
 
 test("the original reasoning-poison payload retains its exact pinned bytes", () => {
@@ -26,18 +25,19 @@ test("the original reasoning-poison payload retains its exact pinned bytes", () 
     "9d471cedfca1c5a0daf8107155eafea19700ec4116fb3fd0f6524b40ebe8993a");
 });
 
-test("PS-1: source text matches the approved English payload and existing intent bytes stay pinned", () => {
+test("PS-1: local approved source payload is unchanged and revised intent bytes are pinned", () => {
   assert.equal(crypto.createHash("sha256").update(PROJECT_SOURCES_REMINDER_TEXT).digest("hex"), "e50d94656e826539ea4748bafab15321d5dfeef8fd03ca49e7c17e666bb33eef");
-  assert.equal(crypto.createHash("sha256").update(USER_INTENT_REMINDER_TEXT).digest("hex"), "cf7ae05b11f36ec6b0d0e46fadb99930b4af65b1a2466477b5c6cd0d4ed814d8");
+  assert.equal(crypto.createHash("sha256").update(USER_INTENT_REMINDER_TEXT).digest("hex"), "ed6e16ef512d5e84d4fc95b82b0640ad3d9d4cb9ae4afab26d870ff649a9f3d8");
 });
 
-test("PS-5: both global instruction files contain the same project reading rule", () => {
-  const section = text => text.split("## Project sources before decisions\n")[1]?.split("\n## ")[0];
-  const codex = section(fs.readFileSync(new URL("../../../../AGENTS.md", import.meta.url), "utf8"));
-  const zcode = section(fs.readFileSync(new URL("../../../../../.zcode/AGENTS.md", import.meta.url), "utf8"));
-  assert.ok(codex);
-  assert.equal(codex, zcode);
-  for (const detail of ["mandatory documents completely", "truncated output", "exceptions", "alternative revisions", "original passage"]) {
-    assert.ok(codex.includes(detail), detail);
+test("each client's current instructions retain the source-reading obligation", () => {
+  const codex = fs.readFileSync(new URL("../../../../AGENTS.md", import.meta.url), "utf8");
+  const zcode = fs.readFileSync(new URL("../../../../../.zcode/AGENTS.md", import.meta.url), "utf8");
+  assert.match(codex, /## Project sources before decisions/);
+  assert.match(zcode, /## E1\. Establish or restore task/);
+  for (const text of [codex, zcode]) {
+    for (const detail of ["mandatory documents completely", "exceptions", "alternative revisions"]) assert.ok(text.includes(detail), detail);
+    assert.match(text, /truncated (?:output|material)/);
+    assert.match(text, /deciding passage|original passage/);
   }
 });

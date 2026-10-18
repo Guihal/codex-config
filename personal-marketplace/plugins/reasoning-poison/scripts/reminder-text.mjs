@@ -61,6 +61,8 @@ and passing tests do not by themselves establish completion. Verify that the
 result achieves the goal; continue material missing work within your authority,
 or report the concrete blocker.
 
+Preserve quantified/general requirements independently of discovered lists. Define the target predicate and relevant universe from governing sources, not from the current file list. Known instances are coverage, not scope definitions; keep coverage OPEN until systematic discovery establishes completeness. Newly discovered qualifying instances and necessary integration are already in scope, subject to edit authority. Before excluding work or stopping, check original requirements and every unresolved obligation; repair derived state/plans that omit them. A completed slice is not the completed task.
+
 Service documents and checks serve execution; they are not a separate goal.
 Create or revise them only when needed to achieve the result, preserve a material
 decision for execution, or deliver something the user explicitly requested.

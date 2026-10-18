@@ -1,14 +1,14 @@
 {
   "name": "agent-state",
-  "version": "0.2.1",
-  "description": "Session guide files, scoped history and exact last-response usage across Codex compaction.",
+  "version": "0.2.4",
+  "description": "Save only reusable micro-skills; execution state stays only in conversation context.",
   "author": {
     "name": "Local developer"
   },
   "interface": {
     "displayName": "Agent Guides",
     "shortDescription": "Carry micro-skills across compaction.",
-    "longDescription": "Save and edit session-bound reusable guides; inject original files with an 80000-byte budget and explicit truncation paths. Imperative pre-compact save reminders and exact last-response usage. Current task state stays in control state.",
+    "longDescription": "Save and edit session-bound reusable guides; inject original files with an 80000-byte budget and explicit truncation paths. Imperative pre-compact save reminders and exact last-response usage. Only reusable micro-skills are saved. Current execution state stays only in conversation context; control-task stores only the main task.",
     "developerName": "Local developer",
     "category": "Developer Tools",
     "capabilities": [

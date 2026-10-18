@@ -16,8 +16,8 @@
 
 | Расширение | Краткое описание | Исходники / состояние |
 | --- | --- | --- |
-| agent-state | Сохраняет и редактирует гайды сессии; возвращает оригиналы после компакта, напоминает сохранить важное и показывает токеновую статистику. | [README](personal-marketplace/plugins/agent-state/README.md); включено |
-| control-task | Хранит одну каноническую задачу на сессию; напоминает обновлять её после сообщений пользователя, сохраняет отдельный bootstrap субагентов. | [README](personal-marketplace/plugins/control-task/README.md); включено |
+| agent-state | Сохраняет только переиспользуемые микроскиллы; возвращает оригиналы после компакта, напоминает сохранить важное и показывает токеновую статистику. | [README](personal-marketplace/plugins/agent-state/README.md); включено |
+| control-task | Хранит основную задачу и её требования, без состояния выполнения; обновляется только после сообщений пользователя, сохраняет отдельный bootstrap субагентов. | [README](personal-marketplace/plugins/control-task/README.md); включено |
 | reasoning-poison | Независимые напоминания проверять рассуждения, держать цель пользователя и читать источники проекта; каденции 5/13/17 вызовов. | [README](personal-marketplace/plugins/reasoning-poison/README.md); включено |
 | project-structure | Инжектит ограниченное дерево проекта и предоставляет read-only инструмент `project_tree`. | [README](personal-marketplace/plugins/project-structure/README.md); включено |
 | codebase-project-graph | Кэш архитектуры и read-only поиск/обход графа зависимостей кода. | Внешний репозиторий; здесь только ссылка, включено |

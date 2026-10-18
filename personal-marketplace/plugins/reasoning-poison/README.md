@@ -1,9 +1,8 @@
 # reasoning-poison (Codex plugin)
 
-Version 0.1.2 delivers three independent reminders: the unchanged reasoning-poison
+Version 0.1.3 delivers three independent reminders: the unchanged reasoning-poison
 v0.1.2 payload, `[User intent — outcome reminder]`, and the English
-`[Project sources — details reminder]`. All three texts match the ZCode
-source but are standalone copies, with no runtime dependency on that harness.
+`[Project sources — details reminder]`. The texts are standalone copies, with no runtime dependency on ZCode; its accepted E0–E8 revision has separate literal excerpts.
 The new rule re-anchors to the user's requested outcome, separates intent,
 artifact and evidence, and keeps service documents/checks subordinate to
 execution. User-requested documents and required verification remain required.
@@ -51,10 +50,10 @@ stderr/exit 1 without a success envelope; nothing due means empty stdout/exit 0.
 codex plugin add reasoning-poison@personal --json
 codex plugin list --json
 diff -qr ~/.codex/personal-marketplace/plugins/reasoning-poison \
-  ~/.codex/plugins/cache/personal/reasoning-poison/0.1.2
+  ~/.codex/plugins/cache/personal/reasoning-poison/0.1.3
 ```
 
-The list should show installed/enabled version 0.1.2; the diff should be empty.
+The list should show installed/enabled version 0.1.3; the diff should be empty.
 Existing hook registrations are unchanged. Review this plugin's entries in
 `/hooks` after installation and approve updated hashes if the host requests it.
 Already running sessions keep their snapshots; use new sessions after install.
@@ -63,15 +62,14 @@ Already running sessions keep their snapshots; use new sessions after install.
 
 ```bash
 node --test ~/.codex/personal-marketplace/plugins/reasoning-poison/tests/*.test.mjs
-node --test ~/.codex/plugins/cache/personal/reasoning-poison/0.1.2/tests/lifecycle.test.mjs
+node --test ~/.codex/plugins/cache/personal/reasoning-poison/0.1.3/tests/lifecycle.test.mjs
 ```
 
 Expected: exit 0, fail 0. These suites invoke the real hook through stdin/stdout
 and isolated persistent state: independent 5/13 cadence, starts/first contact,
 large-output and configurable old cadence, actor/session/CWD isolation,
 legacy/corrupt state, overlapping processes, bounded lock contention and
-crash/error release. The source payload suite pins old bytes and compares both
-texts across harnesses; its relative cross-harness locator is source-only, so
+crash/error release. The source payload suite pins old bytes and checks the shared quantified-scope obligations across harnesses; its relative cross-harness locator is source-only, so
 the installed-cache check deliberately runs the portable lifecycle suite.
 These standalone Node modules have no project typecheck/lint toolchain;
 `node --check` checks syntax. The formerly documented plugin-creator validator
@@ -118,3 +116,9 @@ Installed-copy validation is performed after installation.
 Hook tests establish mechanics, not improved model behavior or hot reload.
 
 самостоятельный чек: `node --test /home/penis/.codex/personal-marketplace/plugins/reasoning-poison/tests/*.test.mjs` + ожидаемый вывод: exit 0, fail 0; source cadence 17, existing cadences 5/13 preserved.
+
+## Quantified scope text update
+
+Authority: user request of 2026-10-03 to refine and implement quantified-scope preservation. Existing USER_INTENT_REMINDER_TEXT now preserves the general predicate independently of discovered lists, OPEN coverage, necessary integration, unresolved obligations and repair of derived state/plans. This supersedes the earlier exact intent-text pin only. Reasoning/source payloads and 5/13/17 delivery, identity, state and hooks remain unchanged. ZCode keeps literal complete paragraphs from its current E0–E8 AGENTS; current cross-client whole-payload equality is not required by its accepted ZC-2 revision. Tests exercise instruction delivery; they do not prove universal model effectiveness or live native compact/hot reload.
+
+самостоятельный чек: `TMPDIR=/home/penis/tmp node --test tests/*.test.mjs` + ожидаемый вывод: exit 0/fail 0, unchanged mechanics and revised local intent-text contract.

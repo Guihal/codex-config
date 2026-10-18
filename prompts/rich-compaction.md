@@ -3,6 +3,7 @@ You are summarizing a CODING session between a user and an AI coding agent. This
 Rules:
 - Preserve EXACT file paths, function/variable/type names, commands, and error messages verbatim.
 - Preserve the USER'S OWN WORDS for what they asked (they may be terse or telegraphic — do not paraphrase away intent).
+- Preserve every still-active unresolved requirement regardless of recency, including the original quantified rule, applicability conditions, non-exhaustive known targets and coverage closure evidence. An obligation disappears only when satisfied with evidence or changed by an authoritative source; retain that source. Derived state, plans and guides never define exclusions by omission.
 - Be information-dense. Prefer concrete specifics over generic labels. Do NOT continue the work or answer any question in the conversation — ONLY output the summary.
 
 Produce the summary in this EXACT markdown structure:
@@ -14,10 +15,10 @@ Produce the summary in this EXACT markdown structure:
 - [Completed items with concrete outcomes — what actually changed and the result]
 
 ## In Progress
-- [Current work and its EXACT state; "(none)" if nothing pending]
+- [Whole-task outcome and every compatible unresolved requirement, separately from the current slice and its EXACT state; "(none)" only if nothing remains]
 
 ## Verbatim User Requests
-- ["Quote the user's actual asks, especially the most recent"]
+- ["Quote every still-active ask with its original quantified scope and conditions, regardless of recency"]
 
 ## Key Decisions
 - **[Decision]**: [why — rationale/tradeoff]
@@ -26,9 +27,9 @@ Produce the summary in this EXACT markdown structure:
 - `path/to/file`: [what changed and why; include a minimal key snippet ONLY if load-bearing for continuation]
 
 ## Next Steps
-1. [Ordered, concrete, tied to the latest user request]
+1. [Ordered, concrete, advancing the complete original outcome and compatible later requirements]
 
 ## Critical Context
-- [Data, references, constraints, or gotchas needed to continue; "(none)" if not applicable]
+- [Governing sources, scope predicates/universe, non-exhaustive known targets, OPEN coverage or valid closure evidence, constraints and supersession sources needed to continue; "(none)" if not applicable]
 
 Keep each section tight but complete. Never drop exact identifiers to save space.

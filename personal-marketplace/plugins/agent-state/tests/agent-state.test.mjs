@@ -143,7 +143,7 @@ test('legacy live-owner gate is respected, unknown owners are not stolen, retry 
   fs.unlinkSync(file);
   assert.equal((await invoke(A, 'agent_state_note', { title: 'retry', body: 'Retry after the actual owner releases its gate.' })).isError, undefined);
 });
-test('I/O/fsync failure never acknowledges success; corruption is retained and blocks compact', async () => {
+test('I/O/fsync failure never acknowledges success; corruption is retained and hook failure is advisory', async () => {
   setup(); const file = rollout(A); await invoke(A, 'agent_state_checkpoint', { content: 'When uncertain, verify the boundary.' });
   const cpFile = path.join(directory(A), 'checkpoint.json'), original = fs.readFileSync(cpFile);
   const saved = fs.fsyncSync;
@@ -156,7 +156,8 @@ test('I/O/fsync failure never acknowledges success; corruption is retained and b
   assert.equal((await invoke(A, 'agent_state_checkpoint', { content: 'verified retry after filesystem repair' })).isError, undefined);
   fs.writeFileSync(cpFile, '{bad');
   await assert.rejects(hook(A, file, 'PreCompact'), /JSON|property name/);
-  assert.equal(hookFailure('PreCompact', new Error('bad')).continue, false);
+  assert.equal(hookFailure('PreCompact', new Error('bad')).continue, undefined);
+  assert.match(hookFailure('PreCompact', new Error('bad')).systemMessage, /Continue the task/);
   assert.equal((await invoke(A, 'agent_state_checkpoint', { content: 'replacement' })).isError, true);
   assert.equal(fs.readFileSync(cpFile, 'utf8'), '{bad');
 });
@@ -246,7 +247,7 @@ test('periodic reminders are bounded, proxy warning is one-shot, large unsampled
   await hook(A, file, 'PostToolUse'); append(file, sample(A));
   assert.match((await hook(A, file, 'PostToolUse')).hookSpecificOutput.additionalContext, /YOU MUST SAVE IMPORTANT REUSABLE GUIDES NOW/);
 });
-test('final-only child recovery preserves maximum checkpoint and needs a new generation', async () => {
+test('final-only child completes without forcing a new generation and preserves originals', async () => {
   setup(); const af = rollout(A), bf = rollout(B, A);
   await hook(B, bf, 'SubagentStart', { agent_id: B, session_id: A });
   const content = 'BEGIN\n' + 'я'.repeat(2010) + '\nMIDDLE\n' + 'я'.repeat(2010) + '\nEND';
@@ -257,8 +258,8 @@ test('final-only child recovery preserves maximum checkpoint and needs a new gen
   append(bf, { type: 'response_item', payload: { type: 'message', role: 'assistant', content: [{ type: 'output_text', text: 'old final' }] } });
   append(bf, sample(B));
   const first = await hook(A, af, 'SubagentStop', { agent_id: B, agent_transcript_path: bf, last_assistant_message: 'old final' });
-  assert.equal(first.decision, 'block'); assert.ok(Buffer.byteLength(first.reason) <= CAPS.reason); assert.ok(first.reason.includes(full));
-  assert.equal((await hook(A, af, 'SubagentStop', { agent_id: B, agent_transcript_path: bf, last_assistant_message: 'old final' })).decision, 'block');
+  assert.deepEqual(first, {});
+  assert.deepEqual(await hook(A, af, 'SubagentStop', { agent_id: B, agent_transcript_path: bf, last_assistant_message: 'old final' }), {});
   append(bf, { type: 'response_item', payload: { type: 'message', role: 'assistant', content: [{ type: 'output_text', text: 'restored final' }] } }); append(bf, sample(B));
   assert.deepEqual(await hook(A, af, 'SubagentStop', { agent_id: B, agent_transcript_path: bf, last_assistant_message: 'restored final' }), {});
   assert.equal(checkpoint(B).content, full);
@@ -298,4 +299,30 @@ test('symlink/forged rollout rejected, invalid private header never shared', asy
   const bad = 'shared:yes\n# header\n\nINVALID_PRIVATE'; const id = hash(bad); fs.writeFileSync(path.join(dir, id + '.md'), bad);
   const own = await invoke(A, 'agent_state_read', { note_id: id }); assert.match(own.structuredContent.content, /INVALID_PRIVATE/);
   const child = await invoke(B, 'agent_state_read', {}); assert.equal(child.structuredContent.notes.length, 0);
+});
+
+test('guide recovery marks agent advice as derived without rewriting original files', async () => {
+  setup(); const file = rollout(A);
+  const saved = await invoke(A, 'agent_state_note', { title: 'guide', body: 'For future debugging, inspect the applicable source.' });
+  const original = fs.readFileSync(saved.structuredContent.path);
+  const result = await hook(A, file, 'SessionStart', { source: 'compact' });
+  const text = result.hookSpecificOutput.additionalContext;
+  assert.match(text, /Agent-written guides are derived advice/);
+  assert.match(text, /not sources of requirements, exclusions, permissions or complete coverage/);
+  assert.match(text, /For future debugging/);
+  assert.deepEqual(fs.readFileSync(saved.structuredContent.path), original);
+});
+
+test('telemetry corruption and corrupt optional guide preserve readable originals without stale usage', async () => {
+  setup(); const file = rollout(A); const note = (await invoke(A, 'agent_state_note', { title: 'readable', body: 'VALID_GUIDE_ORIGINAL' })).structuredContent;
+  const original = fs.readFileSync(note.path);
+  append(file, sample(A)); await hook(A, file, 'SessionStart');
+  fs.appendFileSync(file, '{invalid small row}\n');
+  fs.writeFileSync(path.join(directory(A), 'checkpoint.json'), '{bad');
+  const result = await hook(A, file, 'UserPromptSubmit');
+  const text = result.hookSpecificOutput.additionalContext;
+  assert.match(text, /VALID_GUIDE_ORIGINAL/); assert.match(text, /DEGRADED telemetry/); assert.match(text, /optional guide unreadable/); assert.match(text, /Own completed upstream usage sample unavailable/);
+  const state = JSON.parse(fs.readFileSync(path.join(directory(A), 'state.json')));
+  assert.equal(state.reader, null); assert.equal(state.epoch, null); assert.ok(state.telemetryError);
+  assert.deepEqual(fs.readFileSync(note.path), original);
 });
