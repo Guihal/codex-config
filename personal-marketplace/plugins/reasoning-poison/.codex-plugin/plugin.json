@@ -1,14 +1,14 @@
 {
   "name": "reasoning-poison",
-  "version": "0.1.3",
-  "description": "Independent reasoning-poison, user-intent and project-source reminders on 5/13/17 cadences.",
+  "version": "0.3.0",
+  "description": "Independent reasoning-poison, user-intent and project-source reminders, plus the 14-rule standing-rules catalogue with per-rule cadences and user-input triggers.",
   "author": {
     "name": "Local developer"
   },
   "interface": {
     "displayName": "Reasoning Poison",
     "shortDescription": "Ground reasoning, read project sources, and finish the requested outcome.",
-    "longDescription": "Injects three separate reminders at starts and on independent 5/13/17 tool-call cadences.",
+    "longDescription": "Injects three separate reminders at starts and on independent 5/13/17 tool-call cadences, and delivers the standing-rules catalogue with per-rule cadences.",
     "developerName": "Local developer",
     "category": "Developer Tools",
     "capabilities": [

@@ -5,7 +5,7 @@ import readline from "node:readline";
 import { UPDATE_RULE, DERIVED_TASK_RULE } from "./render.mjs";
 
 import { ADOPT_TOOL, adoptTask } from "./control-task-adopt.mjs";
-import { SET_TOOL, setTask } from "./control-task-tool.mjs";
+import { ADD_TOOL, addTask, SET_TOOL, setTask } from "./control-task-tool.mjs";
 
 const MANIFEST_URL = new URL("../.codex-plugin/plugin.json", import.meta.url);
 const SERVER_VERSION = JSON.parse(
@@ -35,17 +35,18 @@ function handle(message) {
         title: "Control Task",
         version: SERVER_VERSION,
       },
-      instructions:
-        `${DERIVED_TASK_RULE} ${UPDATE_RULE} Use control_task_set to anchor a root session task. Subagents use control_task_adopt with the bootstrap token from their launch prompt. Both tools bind from Codex thread metadata; never ask for or copy a session id.`,
+      instructions: `${DERIVED_TASK_RULE} ${UPDATE_RULE} Use control_task_set to anchor a root session task. Subagents use control_task_adopt with the bootstrap token from their launch prompt. Both tools bind from Codex thread metadata; never ask for or copy a session id.`,
     });
     return;
   }
   if (method === "ping") return result(id, {});
   if (method === "tools/list") {
-    return result(id, { tools: [SET_TOOL, ADOPT_TOOL] });
+    return result(id, { tools: [SET_TOOL, ADD_TOOL, ADOPT_TOOL] });
   }
   if (method === "tools/call" && params?.name === "control_task_set")
     return result(id, setTask(params));
+  if (method === "tools/call" && params?.name === "control_task_add")
+    return result(id, addTask(params));
   if (method === "tools/call" && params?.name === "control_task_adopt") {
     return result(id, adoptTask(params));
   }

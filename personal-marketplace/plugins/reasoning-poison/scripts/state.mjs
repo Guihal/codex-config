@@ -3,6 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { isPlainObject } from "./catalogue.mjs";
 
 export function resolveStateRoot(environment = process.env) {
   if (environment.CODEX_REASONING_POISON_STATE_DIR) {
@@ -36,7 +37,17 @@ export function sessionFile(event, environment = process.env) {
 }
 
 export function initialState() {
-  return { version: 1, completedCalls: 0, intentCompletedCalls: 0, sourcesCompletedCalls: 0, injectedTotal: 0, updatedAt: 0 };
+  return {
+    version: 1,
+    completedCalls: 0,
+    intentCompletedCalls: 0,
+    sourcesCompletedCalls: 0,
+    injectedTotal: 0,
+    // Spec: PS-6 (../README.md#standing-rules-catalogue).
+    ruleCompletedCalls: {},
+    ruleBodiesDelivered: [],
+    updatedAt: 0,
+  };
 }
 
 function requireString(value, name) {
@@ -68,7 +79,19 @@ function normalizeState(value) {
     return null;
   }
   if (!Number.isFinite(value.updatedAt)) return null;
-  return { ...value, intentCompletedCalls, sourcesCompletedCalls };
+  // Spec: PS-6 (../README.md#standing-rules-catalogue).
+  const ruleCompletedCalls = Object.hasOwn(value, "ruleCompletedCalls")
+    ? value.ruleCompletedCalls
+    : {};
+  if (!isPlainObject(ruleCompletedCalls)) return null;
+  for (const counter of Object.values(ruleCompletedCalls)) {
+    if (!Number.isInteger(counter) || counter < 0) return null;
+  }
+  const ruleBodiesDelivered = Object.hasOwn(value, "ruleBodiesDelivered") ? value.ruleBodiesDelivered : [];
+  if (!Array.isArray(ruleBodiesDelivered) || ruleBodiesDelivered.some((name) => typeof name !== "string")) {
+    return null;
+  }
+  return { ...value, intentCompletedCalls, sourcesCompletedCalls, ruleCompletedCalls, ruleBodiesDelivered };
 }
 
 // Re-execute the hook under a per-key kernel lock for the entire transaction.
@@ -88,6 +111,9 @@ export function runLockedHook(file, script, input) {
   if (result.status !== 0) {
     throw new Error(`locked hook failed (${result.signal ?? result.status}): ${result.stderr.trim()}`);
   }
+  // Diagnostics from the locked child (for example a broken catalogue rule)
+  // must stay visible to the caller instead of being captured and dropped.
+  if (result.stderr) process.stderr.write(result.stderr);
   return result.stdout;
 }
 

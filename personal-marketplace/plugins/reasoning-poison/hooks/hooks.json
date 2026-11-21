@@ -1,5 +1,5 @@
 {
-  "description": "Inject the reasoning-poison standing rule reminder.",
+  "description": "Inject the reasoning-poison standing rule reminder and the standing-rules catalogue.",
   "hooks": {
     "SessionStart": [
       {
@@ -27,6 +27,17 @@
       }
     ],
     "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${PLUGIN_ROOT}/scripts/reasoning-poison-hook.mjs\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
       {
         "hooks": [
           {

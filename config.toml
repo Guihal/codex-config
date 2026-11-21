@@ -1,8 +1,8 @@
 approvals_reviewer = "user"
 approval_policy = "never"
 experimental_compact_prompt_file = "/home/penis/.codex/prompts/rich-compaction.md"
-model = "gpt-6.1-sol"
-model_reasoning_effort = "high"
+model = "gpt-6-luna"
+model_reasoning_effort = "medium"
 project_doc_fallback_filenames = ["CLAUDE.md"]
 project_doc_max_bytes = 65536
 
@@ -18,32 +18,28 @@ use_memories = true
 disable_on_external_context = false
 
 [mcp_servers.web-inspector]
-command = "npx"
-args = ["-y", "mcp-web-inspector", "--no-save-session", "--cdp-port", "0"]
-startup_timeout_sec = 30
-tool_timeout_sec = 120
+command = "/home/penis/projects/mcode-shared-mcp/deployments/stdio-e4ae5ec7557ba37ac2e5d16a4b048ad27ec2c36554032e1d2b69d1ee65d69f8a/stdio-unix"
+args = ["/home/penis/.minimax-code/releases/0.6.12-bun.2-memory-20261021/runtime/bun", "/home/penis/projects/mcode-shared-mcp/deployments/stdio-e4ae5ec7557ba37ac2e5d16a4b048ad27ec2c36554032e1d2b69d1ee65d69f8a/stdio-endpoint.mjs", "/home/penis/.minimax-code/releases/0.6.12-bun.2-memory-20261021/runtime/bun", "/home/penis/projects/mcode-shared-mcp/deployments/web-inspector-70e7693307708769d807497fe95d485eb511ae0436adbc313b86ba74f47e6b1d/web-inspector/host.mjs", "--no-save-session", "--cdp-port", "0"]
+env = { MCODE_SHARED_MCP = "1", MCODE_SHARED_MCP_PROFILE = "playwright-v1" }
+startup_timeout_sec = 30.0
+tool_timeout_sec = 120.0
 
-[mcp_servers.web-inspector.tools.navigate]
+[mcp_servers.web-inspector.tools.click]
 approval_mode = "approve"
 
 [mcp_servers.web-inspector.tools.evaluate]
 approval_mode = "approve"
 
-[mcp_servers.web-inspector.tools.click]
+[mcp_servers.web-inspector.tools.navigate]
 approval_mode = "approve"
 
-[mcp_servers.browser-inspector]
-command = "npx"
-args = ["-y", "browser-inspector-mcp"]
-startup_timeout_sec = 30
-tool_timeout_sec = 120
-
 [mcp_servers.figma-bridge]
-command = "/home/penis/.zcode/cli/figma-bridge-mcp.sh"
-args = []
-startup_timeout_sec = 30
-tool_timeout_sec = 360
+args = ["/home/penis/.minimax-code/releases/0.6.12-bun.2-memory-20261021/runtime/bun", "/home/penis/projects/mcode-shared-mcp/deployments/stdio-e4ae5ec7557ba37ac2e5d16a4b048ad27ec2c36554032e1d2b69d1ee65d69f8a/stdio-endpoint.mjs", "/home/penis/.minimax-code/releases/0.6.12-bun.2-memory-20261021/runtime/bun", "/home/penis/projects/mcode-shared-mcp/deployments/figma-9c876d4e4f8cbd95271618b9f64e3593979daa4341c8c44e9ac726fc1a3c1d32/figma/host.mjs"]
+command = "/home/penis/projects/mcode-shared-mcp/deployments/stdio-e4ae5ec7557ba37ac2e5d16a4b048ad27ec2c36554032e1d2b69d1ee65d69f8a/stdio-unix"
+env = { MCODE_SHARED_MCP = "1", MCODE_SHARED_MCP_PROFILE = "playwright-v1" }
 required = true
+startup_timeout_sec = 30.0
+tool_timeout_sec = 360.0
 
 [mcp_servers.figma-bridge.tools.figma_get_status]
 approval_mode = "approve"
@@ -51,81 +47,96 @@ approval_mode = "approve"
 [mcp_servers.figma-bridge.tools.figma_list_open_files]
 approval_mode = "approve"
 
+[mcp_servers.codebase-memory-mcp]
+command = "/home/penis/projects/mcode-shared-mcp/deployments/stdio-e4ae5ec7557ba37ac2e5d16a4b048ad27ec2c36554032e1d2b69d1ee65d69f8a/stdio-unix"
+args = ["/home/penis/.minimax-code/releases/0.6.12-bun.2-memory-20261021/runtime/bun", "/home/penis/projects/mcode-shared-mcp/deployments/stdio-e4ae5ec7557ba37ac2e5d16a4b048ad27ec2c36554032e1d2b69d1ee65d69f8a/stdio-endpoint.mjs", "/home/penis/.minimax-code/releases/0.6.12-bun.2-memory-20261021/runtime/bun", "/home/penis/projects/mcode-shared-mcp/deployments/cbm-0b6e167fcc94830e20271e3365225e56705106f65074e90cda55de4da483196f/cbm/host.mjs"]
+env = { PROJECT_GRAPH_ALLOWED_ROOT = "/home/penis", MCODE_SHARED_MCP = "1", MCODE_SHARED_MCP_PROFILE = "playwright-v1" }
+cwd = "/home/penis/.codex/plugins/cache/personal/codebase-project-graph/0.1.4+codex.20260811184241/."
+startup_timeout_sec = 20.0
+tool_timeout_sec = 60.0
+enabled_tools = ["search_graph", "query_graph", "trace_path", "get_code_snippet", "get_graph_schema", "get_architecture", "search_code", "list_projects", "index_status", "check_index_coverage", "detect_changes"]
+
+[mcp_servers.codebase-memory-mcp.tools.get_architecture]
+approval_mode = "approve"
+
+[mcp_servers.codebase-memory-mcp.tools.index_status]
+approval_mode = "approve"
+
+[mcp_servers.codebase-memory-mcp.tools.search_graph]
+approval_mode = "approve"
+
+[mcp_servers.codebase-memory-mcp.tools.check_index_coverage]
+approval_mode = "approve"
+
 [mcp_servers.computer-use-linux]
 command = "/home/penis/.bun/bin/bun"
 args = ["/usr/projects/cu-scene-proxy/proxy.js"]
-startup_timeout_sec = 30
-tool_timeout_sec = 120
+env = { MCODE_SHARED_MCP = "1", MCODE_SHARED_MCP_PROFILE = "playwright-v1", CUSP_BIN = "/home/penis/projects/mcode-shared-mcp/deployments/stdio-e4ae5ec7557ba37ac2e5d16a4b048ad27ec2c36554032e1d2b69d1ee65d69f8a/stdio-unix", CUSP_BIN_ARGS = "/home/penis/.minimax-code/releases/0.6.12-bun.2-memory-20261021/runtime/bun /home/penis/projects/mcode-shared-mcp/deployments/stdio-e4ae5ec7557ba37ac2e5d16a4b048ad27ec2c36554032e1d2b69d1ee65d69f8a/stdio-endpoint.mjs /home/penis/projects/mcode-shared-mcp/deployments/desktop-faeb81f5436cb066b3ca7cbc5c5e3e4aba34f642f4cdc91143f8ccaacdb041a5/shared-computer-use mcp" }
+startup_timeout_sec = 30.0
+tool_timeout_sec = 120.0
 
-[mcp_servers.computer-use-linux.tools.screenshot]
-approval_mode = "approve"
-
-[mcp_servers.computer-use-linux.tools.perform_action]
-approval_mode = "approve"
-
-[mcp_servers.computer-use-linux.tools.type_text]
-approval_mode = "approve"
-
-[mcp_servers.computer-use-linux.tools.set_value]
+[mcp_servers.computer-use-linux.tools.activate_window]
 approval_mode = "approve"
 
 [mcp_servers.computer-use-linux.tools.click]
 approval_mode = "approve"
 
-[mcp_servers.computer-use-linux.tools.scroll]
+[mcp_servers.computer-use-linux.tools.perform_action]
 approval_mode = "approve"
 
 [mcp_servers.computer-use-linux.tools.press_key]
 approval_mode = "approve"
 
-[mcp_servers.computer-use-linux.tools.activate_window]
+[mcp_servers.computer-use-linux.tools.screenshot]
+approval_mode = "approve"
+
+[mcp_servers.computer-use-linux.tools.scroll]
+approval_mode = "approve"
+
+[mcp_servers.computer-use-linux.tools.set_value]
+approval_mode = "approve"
+
+[mcp_servers.computer-use-linux.tools.type_text]
 approval_mode = "approve"
 
 [mcp_servers.searxng]
 command = "/home/penis/.bun/bin/bun"
 args = ["/home/penis/.claude/mcp/searxng/server.ts"]
-startup_timeout_sec = 20
-tool_timeout_sec = 60
+startup_timeout_sec = 20.0
+tool_timeout_sec = 60.0
 
 [mcp_servers.swatchdog]
 url = "https://swatchdog-connector-970396648818.us-central1.run.app/mcp"
-startup_timeout_sec = 30
-tool_timeout_sec = 120
-
-[mcp_servers.playwright]
-command = "npx"
-args = ["-y", "@playwright/mcp@latest", "--isolated"]
-startup_timeout_sec = 30
-tool_timeout_sec = 120
-
-[mcp_servers.playwright.tools.browser_navigate]
-approval_mode = "approve"
+startup_timeout_sec = 30.0
+tool_timeout_sec = 120.0
 
 [mcp_servers.context7]
 url = "https://mcp.context7.com/mcp"
-env_http_headers = { "Authorization" = "CONTEXT7_API_KEY" }
-startup_timeout_sec = 30
-tool_timeout_sec = 60
+startup_timeout_sec = 30.0
+tool_timeout_sec = 60.0
+
+[mcp_servers.context7.env_http_headers]
+Authorization = "CONTEXT7_API_KEY"
 
 [mcp_servers.node_repl]
 args = []
 command = "/usr/lib/chatgpt/resources/cua_node/bin/node_repl"
-startup_timeout_sec = 120
+startup_timeout_sec = 120.0
 
 [mcp_servers.node_repl.env]
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab,mcpapps"
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.930.31730"
+BROWSER_USE_TINYSKY_ENABLED = "1"
+CODEX_CLI_PATH = "/usr/lib/chatgpt/resources/codex"
+CODEX_HOME = "/home/penis/.codex"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/usr/lib/chatgpt/resources/cua_node/bin/node"
 NODE_REPL_TRUSTED_CODE_PATHS = "/home/penis/.codex:/usr/lib/chatgpt/resources/cua_node/lib/node_modules"
-CODEX_HOME = "/home/penis/.codex"
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab,mcpapps"
-BROWSER_USE_TINYSKY_ENABLED = "1"
-NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
-NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
-BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.930.31730"
 NODE_REPL_TRUSTED_SERVICES = '{"browser":"/home/penis/.codex/plugins/cache/openai-bundled/browser/26.930.31730/scripts/browser-service.mjs"}'
-CODEX_CLI_PATH = "/usr/lib/chatgpt/resources/codex"
 
 [agents]
 enabled = true
@@ -289,6 +300,21 @@ trust_level = "trusted"
 [projects."/home/penis/.codex"]
 trust_level = "trusted"
 
+[projects."/home/penis/projects/myfriend"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/HackathonAutumnFront2026"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/HackAutumn2026Front"]
+trust_level = "trusted"
+
+[projects."/home/penis/projects/HackAutumn2026Back"]
+trust_level = "trusted"
+
+[projects."/home/penis/.omo"]
+trust_level = "trusted"
+
 [plugins."project-structure@personal"]
 enabled = true
 
@@ -380,27 +406,35 @@ trusted_hash = "sha256:83e80c92965fddea9364dc59a43d130f6e47880ed9bdb6de823e0386e
 
 [hooks.state."control-task@personal:hooks/hooks.json:post_tool_use:0:0"]
 trusted_hash = "sha256:0da2e194c52c7f23335ff7054c79379460825561b6014a9d873b0399ee9953bd"
+trusted_content_hash = "sha256:7922a6052ea103a33339659165478a639dabff93fbc6550ba73d1d6ffd39f2fa"
 
 [hooks.state."control-task@personal:hooks/hooks.json:session_start:0:0"]
 trusted_hash = "sha256:c8d40151ded14d25f446f580e565f38989ce535d6037e6d43a5dc0e5880a36b6"
+trusted_content_hash = "sha256:7922a6052ea103a33339659165478a639dabff93fbc6550ba73d1d6ffd39f2fa"
 
 [hooks.state."control-task@personal:hooks/hooks.json:user_prompt_submit:0:0"]
 trusted_hash = "sha256:ad0dc1f1ffd7f4c325668258992757ef6c3416f82e23b695412f794d316f09f3"
+trusted_content_hash = "sha256:7922a6052ea103a33339659165478a639dabff93fbc6550ba73d1d6ffd39f2fa"
 
 [hooks.state."control-task@personal:hooks/hooks.json:pre_tool_use:0:0"]
 trusted_hash = "sha256:23c12af5d98c80bb76c54be953572d19597867890b61e9565a3a04fcdfff690d"
+trusted_content_hash = "sha256:7922a6052ea103a33339659165478a639dabff93fbc6550ba73d1d6ffd39f2fa"
 
 [hooks.state."control-task@personal:hooks/hooks.json:subagent_start:0:0"]
 trusted_hash = "sha256:bf722251385ecd161f587494c54807ace40e4d5e0116b88125bf0f3dcc7db0f0"
+trusted_content_hash = "sha256:7922a6052ea103a33339659165478a639dabff93fbc6550ba73d1d6ffd39f2fa"
 
 [hooks.state."reasoning-poison@personal:hooks/hooks.json:post_tool_use:0:0"]
 trusted_hash = "sha256:a3d0358c907c3a947667c1b74fd15e1bfec16076db1d9b03a7ee7a06d265efc1"
+trusted_content_hash = "sha256:676b03c86915bcb66de6b3a279d167a763ada3dfaa773e0d34d6db2e8dbeef72"
 
 [hooks.state."reasoning-poison@personal:hooks/hooks.json:session_start:0:0"]
 trusted_hash = "sha256:42a9981d91737cfb0c392e0f6325e1b05adf4a6b35881c79865f836bc48606f1"
+trusted_content_hash = "sha256:676b03c86915bcb66de6b3a279d167a763ada3dfaa773e0d34d6db2e8dbeef72"
 
 [hooks.state."reasoning-poison@personal:hooks/hooks.json:subagent_start:0:0"]
 trusted_hash = "sha256:8b5ac0ca896cc74c72a1884427767de0cd18be693bc32662c6ead10f81081898"
+trusted_content_hash = "sha256:676b03c86915bcb66de6b3a279d167a763ada3dfaa773e0d34d6db2e8dbeef72"
 
 [hooks.state."agent-state@personal:hooks/hooks.json:post_tool_use:0:0"]
 trusted_hash = "sha256:38be670f3099b7c4996c1b0e6df1551068d45053bba98f20bd52d469365ee3f2"
@@ -423,6 +457,10 @@ trusted_hash = "sha256:ba98184ecabc7000e4d67c5faca4bc1d56bf44b625ff96fb6e80e28e6
 [hooks.state."agent-state@personal:hooks/hooks.json:subagent_stop:0:0"]
 trusted_hash = "sha256:779d04104b8ceb272020dbce92371ce1d487bb5adf146f87be44bb7912900564"
 
+[hooks.state."reasoning-poison@personal:hooks/hooks.json:user_prompt_submit:0:0"]
+trusted_hash = "sha256:cb10482a333aafe14e1391f3e37b85a77cba24b305f60746805a34c770e6dc20"
+trusted_content_hash = "sha256:676b03c86915bcb66de6b3a279d167a763ada3dfaa773e0d34d6db2e8dbeef72"
+
 [tui]
 screen_reader_detection_done = true
 
@@ -439,7 +477,7 @@ hide_rate_limit_model_nudge = true
 
 [desktop]
 followUpQueueMode = "steer"
-conversationDetailMode = "STEPS_PROSE"
+conversationDetailMode = "STEPS_COMMANDS"
 ambient-suggestions-enabled = true
 
 [marketplaces.openai-bundled]
@@ -449,3 +487,18 @@ source = "/home/penis/.codex/.tmp/bundled-marketplaces/openai-bundled"
 [marketplaces.openai-primary-runtime]
 source_type = "local"
 source = "/home/penis/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[mcp_servers.project-graph]
+command = "/home/penis/projects/mcode-shared-mcp/deployments/stdio-e4ae5ec7557ba37ac2e5d16a4b048ad27ec2c36554032e1d2b69d1ee65d69f8a/stdio-unix"
+args = ["/home/penis/.minimax-code/releases/0.6.12-bun.2-memory-20261021/runtime/bun", "/home/penis/projects/mcode-shared-mcp/deployments/stdio-e4ae5ec7557ba37ac2e5d16a4b048ad27ec2c36554032e1d2b69d1ee65d69f8a/stdio-endpoint.mjs", "/home/penis/.minimax-code/releases/0.6.12-bun.2-memory-20261021/runtime/bun", "/home/penis/projects/mcode-shared-mcp/deployments/graph-d50dc5361a5a009f7fc4f553fa7affd006650cbdc29e9c69457d8245cdce8e79/graph/host.mjs"]
+cwd = "/home/penis/.codex/plugins/cache/personal/codebase-project-graph/0.1.4+codex.20260811184241/."
+startup_timeout_sec = 20.0
+tool_timeout_sec = 120.0
+supports_parallel_tool_calls = false
+default_tools_approval_mode = "auto"
+
+[mcp_servers.project-graph.env]
+"PROJECT_GRAPH_ALLOWED_ROOT" = "/home/penis"
+"MCODE_SHARED_MCP" = "1"
+"MCODE_SHARED_MCP_PROFILE" = "playwright-v1"
+PWD = "/home/penis/.codex/plugins/cache/personal/codebase-project-graph/0.1.4+codex.20260811184241"

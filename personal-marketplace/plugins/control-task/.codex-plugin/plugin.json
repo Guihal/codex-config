@@ -1,6 +1,6 @@
 {
   "name": "control-task",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Canonical main-task anchor; updated only after user messages, never execution state.",
   "author": {
     "name": "Local developer"

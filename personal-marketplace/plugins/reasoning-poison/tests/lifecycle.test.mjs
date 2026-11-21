@@ -11,9 +11,13 @@ import { sessionFile } from "../scripts/state.mjs";
 const ROOT = path.resolve(import.meta.dirname, "..");
 const HOOK = path.join(ROOT, "scripts", "reasoning-poison-hook.mjs");
 const STATE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "codex-poison-test-"));
+// The standing-rules catalogue is covered by tests/catalogue.test.mjs. Here it
+// stays empty so the pinned-payload assertions remain byte-exact.
+const EMPTY_CATALOGUE_DIR = fs.mkdtempSync(path.join(os.tmpdir(), "codex-poison-catalogue-"));
 const BASE_ENV = {
   ...process.env,
   CODEX_REASONING_POISON_STATE_DIR: STATE_DIR,
+  CODEX_STANDING_RULES_DIR: EMPTY_CATALOGUE_DIR,
 };
 delete BASE_ENV.CODEX_REASONING_POISON_INTERVAL;
 delete BASE_ENV.CODEX_REASONING_POISON_LARGE_OUTPUT_BYTES;
@@ -21,7 +25,10 @@ const CWD = "/probe-workspace";
 const BOTH_REMINDERS = `${REMINDER_TEXT}\n${USER_INTENT_REMINDER_TEXT}`;
 const ALL_REMINDERS = `${BOTH_REMINDERS}\n${PROJECT_SOURCES_REMINDER_TEXT}`;
 
-after(() => fs.rmSync(STATE_DIR, { recursive: true, force: true }));
+after(() => {
+  fs.rmSync(STATE_DIR, { recursive: true, force: true });
+  fs.rmSync(EMPTY_CATALOGUE_DIR, { recursive: true, force: true });
+});
 
 function run(event, environment = {}) {
   return spawnSync(process.execPath, [HOOK], {

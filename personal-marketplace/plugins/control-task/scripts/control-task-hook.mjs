@@ -36,7 +36,7 @@ function stateSessionId(event) {
 
 function shouldInject(event, state, now) {
   if (event.hook_event_name !== "PostToolUse") return true;
-  if (/control_task_(set|adopt)$/.test(String(event.tool_name ?? "")))
+  if (/control_task_(set|add|adopt)$/.test(String(event.tool_name ?? "")))
     return true;
   return now - state.lastInjectedAt >= refreshMilliseconds();
 }
@@ -66,7 +66,10 @@ async function main() {
       },
     );
     if (!isInjectionDue) return;
-    const reminder = event.hook_event_name === "UserPromptSubmit" ? USER_PROMPT_REMINDER + "\n\n" : "";
+    const reminder =
+      event.hook_event_name === "UserPromptSubmit"
+        ? USER_PROMPT_REMINDER + "\n\n"
+        : "";
     output(event.hook_event_name, reminder + renderTaskState(state));
   } catch (error) {
     process.stderr.write(`control-task hook: ${error.stack ?? error}\n`);
